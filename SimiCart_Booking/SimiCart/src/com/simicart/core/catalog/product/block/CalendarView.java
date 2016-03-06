@@ -61,15 +61,13 @@ public class CalendarView extends LinearLayout {
 	private TextView txtDate;
 	private GridView grid;
 
-//	private ArrayList<Date> listExcludeDays = new ArrayList<Date>();
+	private ArrayList<Date> listExcludeDays = new ArrayList<Date>();
 	private Date startDate, endDate;
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	SimpleDateFormat formatDateToString = new SimpleDateFormat("yyyy-MM-dd");
 	private int positionStart, positionEnd;
 	private ArrayList<Integer> listPosition = new ArrayList<Integer>();
 	private boolean haveExcludayBetween;
-	
-	private ArrayList<EntityExcludedday> mListExcludeeday = new ArrayList<EntityExcludedday>();
 
 	private int flagClick = 0;
 	// seasons' rainbow
@@ -91,10 +89,6 @@ public class CalendarView extends LinearLayout {
 		initControl(context, attrs);
 	}
 
-	public void setListExcludeeday(
-			ArrayList<EntityExcludedday> mListExcludeeday) {
-		this.mListExcludeeday = mListExcludeeday;
-	}
 	public void setBooking(CacheBooking booking) {
 		this.booking = booking;
 	}
@@ -109,30 +103,30 @@ public class CalendarView extends LinearLayout {
 		this.mProductId = mProductId;
 	}
 
-//	public void setListExcludeDays(ArrayList<String> listExcludeDays) {
-//		try {
-//			if (listExcludeDays.size() > 0) {
-//				for (String date : listExcludeDays) {
-//					Date date2 = formatDateToString.parse(date);
-//					this.listExcludeDays.add(date2);
-//				}
-//			}
-//		} catch (Exception e) {
-//		}
-//	}
+	public void setListExcludeDays(ArrayList<String> listExcludeDays) {
+		try {
+			if (listExcludeDays.size() > 0) {
+				for (String date : listExcludeDays) {
+					Date date2 = formatDateToString.parse(date);
+					this.listExcludeDays.add(date2);
+				}
+			}
+		} catch (Exception e) {
+		}
+	}
 
 	public void setStartDate(String startDate) {
 		try {
-			if(Utils.validateString(startDate)){
+			if (Utils.validateString(startDate)) {
 				this.startDate = format.parse(startDate);
-			}else{
+			} else {
 				this.startDate = new Date();
 			}
 			if (this.startDate.before(new Date())) {
-//				Calendar cal = Calendar.getInstance();
-//				cal.setTime(new Date());
-//				cal.add(Calendar.DAY_OF_YEAR, -1);
-//				Date oneDayBefore = cal.getTime();
+				// Calendar cal = Calendar.getInstance();
+				// cal.setTime(new Date());
+				// cal.add(Calendar.DAY_OF_YEAR, -1);
+				// Date oneDayBefore = cal.getTime();
 				this.startDate = new Date();
 			}
 		} catch (Exception e) {
@@ -352,14 +346,14 @@ public class CalendarView extends LinearLayout {
 		if (endDate != null && date.after(endDate)) {
 			return false;
 		}
-//		if (listExcludeDays.size() > 0) {
-//			for (Date date2 : listExcludeDays) {
-//				if (formatDateToString.format(date).equals(
-//						formatDateToString.format(date2))) {
-//					return false;
-//				}
-//			}
-//		}
+		if (listExcludeDays.size() > 0) {
+			for (Date date2 : listExcludeDays) {
+				if (formatDateToString.format(date).equals(
+						formatDateToString.format(date2))) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -376,10 +370,10 @@ public class CalendarView extends LinearLayout {
 	public void updateCalendar(HashSet<Date> events) {
 		if (currentDate.get(Calendar.MONTH) == Instance.currenDate
 				.get(Calendar.MONTH)) {
-			if(booking != null){ 
-			positionStart = booking.getPosition_start();
-			positionEnd = booking.getPosition_end();
-			flagClick = booking.getFlag_click();
+			if (booking != null) {
+				positionStart = booking.getPosition_start();
+				positionEnd = booking.getPosition_end();
+				flagClick = booking.getFlag_click();
 			}
 		}
 
@@ -472,27 +466,27 @@ public class CalendarView extends LinearLayout {
 				((TextView) view).setTextColor(getResources().getColor(
 						R.color.greyed_out));
 			}
-			// if (startDate != null && endDate != null && date.after(startDate)
-			// && date.before(endDate)) {
-//			if (listExcludeDays.size() > 0) {
-//				for (Date dateExclude : listExcludeDays) {
-//					if (formatDateToString.format(dateExclude).equals(
-//							formatDateToString.format(date))) {
-//						((TextView) view).setTextColor(getResources().getColor(
-//								R.color.greyed_out));
-//					}
-//				}
-//			}
-			// }
+			if (startDate != null && endDate != null && date.after(startDate)
+					&& date.before(endDate)) {
+				if (listExcludeDays.size() > 0) {
+					for (Date dateExclude : listExcludeDays) {
+						if (formatDateToString.format(dateExclude).equals(
+								formatDateToString.format(date))) {
+							((TextView) view).setTextColor(getResources()
+									.getColor(R.color.greyed_out));
+						}
+					}
+				}
+			}
 			if (currentDate.get(Calendar.MONTH) == Instance.currenDate
-					.get(Calendar.MONTH)){
+					.get(Calendar.MONTH)) {
 				if (positionStart > 0 && positionEnd > 0) {
 					if (position >= positionStart && position <= positionEnd) {
-						 view.setBackgroundColor(Color.parseColor("#007FFF"));
+						view.setBackgroundColor(Color.parseColor("#007FFF"));
 					}
 				} else if (positionStart > 0) {
 					if (position == positionStart) {
-						 view.setBackgroundColor(Color.parseColor("#007FFF"));
+						view.setBackgroundColor(Color.parseColor("#007FFF"));
 					}
 				}
 			}

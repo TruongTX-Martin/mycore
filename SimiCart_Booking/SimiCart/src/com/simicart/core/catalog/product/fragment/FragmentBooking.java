@@ -1,6 +1,9 @@
 package com.simicart.core.catalog.product.fragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TimePicker.OnTimeChangedListener;
 
+import com.google.android.gms.internal.ca;
 import com.google.gson.JsonObject;
 import com.simicart.core.base.delegate.ModelDelegate;
 import com.simicart.core.base.fragment.SimiFragment;
@@ -47,7 +51,7 @@ public class FragmentBooking extends SimiFragment {
 	private Context mContext;
 	private Product mProduct;
 	private ArrayList<EntityExcludedday> listExcludeday = new ArrayList<EntityExcludedday>();
-
+	private ArrayList<String> mExcludeDayString = new ArrayList<String>();
 	private CacheBooking cacheBooking;
 	private CalendarView calendar;
 	private TextView txt_cancel;
@@ -60,15 +64,18 @@ public class FragmentBooking extends SimiFragment {
 	public String SHOW_DATE = "date_fromto";
 	private String SHOW_TIME = "time_fromto";
 	private String SHOW_DATE_TIME = "datetime_fromto";
-	
+	SimpleDateFormat formatDateToString = new SimpleDateFormat("yyyy-MM-dd");
+
 	private boolean addCart;
 
 	private ProductDelegate mDelegate;
 	private ProductController productController;
+
 	public static FragmentBooking newInstance() {
 		FragmentBooking fragment = new FragmentBooking();
 		return fragment;
 	}
+
 	public void setAddCart(boolean addCart) {
 		this.addCart = addCart;
 	}
@@ -76,10 +83,11 @@ public class FragmentBooking extends SimiFragment {
 	public void setProductController(ProductController productController) {
 		this.productController = productController;
 	}
+
 	public void setDelegate(ProductDelegate mDelegate) {
 		this.mDelegate = mDelegate;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -130,14 +138,16 @@ public class FragmentBooking extends SimiFragment {
 		if (mProduct != null) {
 			calendar.setProductId(mProduct.getId());
 		}
-		 String dateFrom = mProduct.getBooking().getBooking_date_from();
-		 String dateTo = mProduct.getBooking().getBooking_date_to();
-		 Log.e("Date From ==================> ", dateFrom);
-		 Log.e("Date To ====================>", dateTo);
+		
+		ArrayList<String> listExcluday = getExcludeddaysFromData(listExcludeday);
+		String dateFrom = mProduct.getBooking().getBooking_date_from();
+		String dateTo = mProduct.getBooking().getBooking_date_to();
+		Log.e("Date From ==================> ", dateFrom);
+		Log.e("Date To ====================>", dateTo);
 		calendar.setBooking(cacheBooking);
 		calendar.setStartDate(mProduct.getBooking().getBooking_date_from());
 		calendar.setEndDate(mProduct.getBooking().getBooking_date_to());
-		calendar.setListExcludeeday(listExcludeday);
+		calendar.setListExcludeDays(listExcluday);
 		Log.e("TimeFrom===========>", mProduct.getBooking()
 				.getBooking_time_from());
 		Log.e("TimeTo===========>", mProduct.getBooking().getBooking_time_to());
@@ -146,6 +156,167 @@ public class FragmentBooking extends SimiFragment {
 		checkHideShowComponent(range_type);
 		handleChooseTime();
 		return rootView;
+	}
+
+	private ArrayList<String> getExcludeddaysFromData(
+			ArrayList<EntityExcludedday> listExcludeday) {
+		if (listExcludeday.size() > 0) {
+			for (int i = 0; i < listExcludeday.size(); i++) {
+				EntityExcludedday entity = listExcludeday.get(i);
+				if (entity.getPeriod_recurrence_type() != null) {
+					if (entity.getPeriod_recurrence_type().equals("monthly")) {
+						ArrayList<String> dateMonthly = getPeriodDate(
+								entity.getPeriod_from(),
+								entity.getPeriod_to());
+						mExcludeDayString.addAll(getDateMonthly(dateMonthly));
+					}
+					if (entity.getPeriod_recurrence_type().equals("yearly")) {
+						ArrayList<String> dateYearly = getPeriodDate(
+								entity.getPeriod_from(),
+								entity.getPeriod_to());
+						mExcludeDayString.addAll(getDateYearly(dateYearly));
+					}
+
+				} else {
+					if (entity.getPeriod_type().equals("single")
+							|| entity.getPeriod_type().equals("period")) {
+						ArrayList<String> singsandperiod = getPeriodDate(
+								entity.getPeriod_from(),
+								entity.getPeriod_to());
+						mExcludeDayString.addAll(singsandperiod);
+					}
+					if (entity.getPeriod_type().equals("recurrent_day")) {
+						ArrayList<String> recurrentDays = getPeriodDate(
+								entity.getPeriod_from(),
+								entity.getPeriod_to());
+						//lặp lại ngày
+						mExcludeDayString.addAll(getDateMonthly(recurrentDays));
+					}
+					if (entity.getPeriod_type().equals("recurrent_date")) {
+						ArrayList<String> resucrrentDates = getPeriodDate(
+								entity.getPeriod_from(),
+								entity.getPeriod_to());
+						//lặp lại thứ 
+						mExcludeDayString.addAll(getDateRepeatDate(resucrrentDates));
+					}
+				}
+			}
+		}
+		return mExcludeDayString;
+	}
+	
+	private ArrayList<String> getDateRepeatDate(ArrayList<String> dateMonthly) {
+		ArrayList<String> list = new ArrayList<String>();
+		if(dateMonthly.size() > 0){
+			for(String date : dateMonthly) {
+				int year = getYearFromDate(date);
+				int month = getMonthFromDate(date);
+				int day = getDayFromDate(date);
+				Calendar calendar = Calendar.getInstance();
+				try {
+					list.add(date);
+					calendar.setTime(formatDateToString.parse(date));
+					for (int i =1; i< 20 ; i++) {
+						calendar.add(Calendar.DAY_OF_YEAR, +7);
+						list.add(formatDateToString.format(calendar.getTime()));
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
+	private ArrayList<String> getDateMonthly(ArrayList<String> dateMonthly) {
+		ArrayList<String> list = new ArrayList<String>();
+		if(dateMonthly.size() > 0){
+			for(String date : dateMonthly) {
+				int year = getYearFromDate(date);
+				int month = getMonthFromDate(date);
+				int day = getDayFromDate(date);
+				for(int i=1; i < 13; i++) {
+					list.add(year + "-" + i + "-" + day);
+				}
+			}
+		}
+		return list;
+	}
+	private ArrayList<String> getDateYearly(ArrayList<String> dateMonthly) {
+		ArrayList<String> list = new ArrayList<String>();
+		if(dateMonthly.size() > 0){
+			for(String date : dateMonthly) {
+				int year = getYearFromDate(date);
+				int month = getMonthFromDate(date);
+				int day = getDayFromDate(date);
+				for(int i=year; i < year + 5; i++) {
+					list.add(i + "-" + month + "-" + day);
+				}
+			}
+		}
+		return list;
+	}
+
+	private ArrayList<String> getPeriodDate(String periodFrom, String periodTo) {
+		ArrayList<String> DATE = new ArrayList<String>();
+		if (!Utils.validateString(periodTo) && Utils.validateString(periodFrom)) {
+			DATE.add(periodFrom);
+		} else if (Utils.validateString(periodFrom) && Utils.validateString(periodTo)) {
+			int dayFrom = getDayFromDate(periodFrom);
+			int dayTo = getDayFromDate(periodTo);
+			if (dayTo > dayFrom +1) {
+				DATE.add(periodFrom);
+				DATE.add(periodTo);
+				try {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(formatDateToString.parse(periodFrom));
+					for (int i = 1;; i++) {
+						calendar.add(Calendar.DAY_OF_YEAR, +1);
+						if (calendar.getTime().before(
+								formatDateToString.parse(periodTo))) {
+							DATE.add(formatDateToString.format(calendar
+									.getTime()));
+						} else {
+							break;
+						}
+
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			} else if (dayTo == dayFrom) {
+				DATE.add(periodFrom);
+			}
+		}
+		return DATE;
+	}
+
+	private int getYearFromDate(String date) {
+		int year = 0;
+		if (date != null && date.contains("-")) {
+			String[] array = date.split("-");
+			year = Integer.parseInt(array[0]);
+		}
+		return year;
+	}
+
+	private int getMonthFromDate(String date) {
+		int month = 0;
+		if (date != null && date.contains("-")) {
+			String[] array = date.split("-");
+			month = Integer.parseInt(array[1]);
+		}
+		return month;
+	}
+
+	private int getDayFromDate(String date) {
+		int day = 0;
+		if (date != null && date.contains("-")) {
+			String[] array = date.split("-");
+			day = Integer.parseInt(array[2]);
+		}
+		return day;
+
 	}
 
 	public String getParamTimeStart(String inputTime) {
@@ -338,14 +509,14 @@ public class FragmentBooking extends SimiFragment {
 			public void callBack(String message, boolean isSuccess) {
 				Product product = null;
 				JSONObject result = mModel.getJSON();
-				if(result.has("data")) {
+				if (result.has("data")) {
 					try {
 						JSONArray array = result.getJSONArray("data");
-						if(array.length() > 0){
+						if (array.length() > 0) {
 							product = new Product();
-							product.setJSONObject(array.getJSONObject(0));	
+							product.setJSONObject(array.getJSONObject(0));
 						}
-						
+
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -356,9 +527,9 @@ public class FragmentBooking extends SimiFragment {
 						mDelegate.onUpdatePriceView(view);
 					}
 				}
-				if(addCart){
-					//addToCart
-					if(productController != null){
+				if (addCart) {
+					// addToCart
+					if (productController != null) {
 						productController.addtoCart();
 					}
 				}
@@ -373,9 +544,12 @@ public class FragmentBooking extends SimiFragment {
 		}
 		CacheBooking booking = InstanceBooking.getInstance()
 				.getCacheBookingFromProductId(mProduct.getId());
-		mModel.addParam("date_from", booking.getParam_updatePrice_dateFrom());
-		mModel.addParam("date_to", booking.getParam_updatePrice_dateTo());
-		mModel.request();
+		if (booking != null) {
+			mModel.addParam("date_from",
+					booking.getParam_updatePrice_dateFrom());
+			mModel.addParam("date_to", booking.getParam_updatePrice_dateTo());
+			mModel.request();
+		}
 	}
 
 	protected View onShowPriceView(Product product) {
