@@ -27,6 +27,7 @@ public class MainActivity extends FragmentActivity {
 		BaseManager.getIntance().setCurrentActivity(this);
 		BaseManager.getIntance().setCurrentContext(
 				getApplicationContext());
+		//master
 		context = this;
 		try {
 			setContentView(Rconfig.getInstance().layout(
