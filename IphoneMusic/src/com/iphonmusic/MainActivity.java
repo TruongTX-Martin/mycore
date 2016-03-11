@@ -29,7 +29,6 @@ public class MainActivity extends FragmentActivity {
 				getApplicationContext());
 		//master
 		context = this;
-		//merto 
 		try {
 			setContentView(Rconfig.getInstance().layout(
 					"core_main_activity"));
