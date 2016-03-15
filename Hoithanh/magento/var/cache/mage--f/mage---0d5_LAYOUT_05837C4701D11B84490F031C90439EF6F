@@ -1,0 +1,13 @@
+<block type="adminhtml/customer_edit_tab_wishlist" name="customer.wishlist.edit.tab" output="toHtml"/>
+<reference name="customer.wishlist.edit.tab">
+   <action method="addProductConfigurationHelper">
+      <type>bundle</type>
+      <name>bundle/catalog_product_configuration</name>
+   </action>
+</reference>
+<reference name="customer.wishlist.edit.tab">
+   <action method="addProductConfigurationHelper">
+      <type>downloadable</type>
+      <name>downloadable/catalog_product_configuration</name>
+   </action>
+</reference>
