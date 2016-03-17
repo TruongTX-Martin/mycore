@@ -13,6 +13,9 @@ public class Config {
 	private String section_color = "#E0E0E0";
 	private String key_color = "#3498DB";
 	private Map<String, String> mLanguages;
+	
+	private boolean isPlay = false;
+	private boolean isRepeat ;
 
 	public static Config getInstance() {
 		if (null == instance) {
@@ -20,6 +23,20 @@ public class Config {
 		}
 
 		return instance;
+	}
+	
+	public void setRepeat(boolean input) {
+		this.isRepeat  = input;
+	}
+	
+	public boolean getIsRepeat() {
+		return isRepeat;
+	}
+	public void setPlay(boolean input){
+		this.isPlay = input;
+	}
+	public boolean getIsPlay(){
+		return isPlay;
 	}
 
 	public int getColorMain() {

@@ -44,12 +44,12 @@ public class TabAdapterFragment extends FragmentStatePagerAdapter {
 
 	private void addFragment() {
 		FragmentSongs frm_song = FragmentSongs.newInstance();
-		FragmentFolder frm_folder = FragmentFolder.newInstance();
+//		FragmentFolder frm_folder = FragmentFolder.newInstance();
 		FragmentPlaylist frm_playlist = FragmentPlaylist.newInstance();
 		FragmentWishlist frm_wishlist = FragmentWishlist.newInstance();
 		FragmentVideo frm_video = FragmentVideo.newInstance();
 		mListFragment.add(frm_song);
-		mListFragment.add(frm_folder);
+//		mListFragment.add(frm_folder);
 		mListFragment.add(frm_playlist);
 		mListFragment.add(frm_wishlist);
 		mListFragment.add(frm_video);
@@ -57,7 +57,7 @@ public class TabAdapterFragment extends FragmentStatePagerAdapter {
 
 	private void addTitle() {
 		mListTitle.add(Constant.ITEM_SONGS);
-		mListTitle.add(Constant.ITEM_FOLDERS);
+//		mListTitle.add(Constant.ITEM_FOLDERS);
 		mListTitle.add(Constant.ITEM_PLAYLIST);
 		mListTitle.add(Constant.ITEM_WISHLIST);
 		mListTitle.add(Constant.ITEM_VIDEOS);

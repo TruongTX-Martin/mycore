@@ -10,9 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.menubottom.FragmentBottom;
 import com.iphonmusic.menutop.fragment.MenuTopFragment;
 import com.iphonmusic.slidemenu.fragment.SlideMenuFragment;
 
@@ -27,15 +30,15 @@ public class MainActivity extends FragmentActivity {
 		BaseManager.getIntance().setCurrentActivity(this);
 		BaseManager.getIntance().setCurrentContext(
 				getApplicationContext());
-		//master
 		context = this;
-		//merto 
+		setContentView(R.layout.core_main_activity);
 		try {
-			setContentView(Rconfig.getInstance().layout(
-					"core_main_activity"));
+//			setContentView(Rconfig.getInstance().layout(
+//					"core_main_activity"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		Log.e("List Song =================>", Instance.LISTSONG.size()+"");
 		mNavigationDrawerFragment = (SlideMenuFragment) getSupportFragmentManager()
 				.findFragmentById(Rconfig.getInstance().id("navigation_drawer"));
 		mNavigationDrawerFragment.setup(Rconfig.getInstance().id("navigation_drawer"),
@@ -47,8 +50,11 @@ public class MainActivity extends FragmentActivity {
 				.newInstance(mNavigationDrawerFragment);
 		mFragmentTransaction.replace(
 				Rconfig.getInstance().id("menu_top"), fragmentMenuTop);
+		
+		FragmentBottom bottom = FragmentBottom.newInstance();
+		mFragmentTransaction.replace(
+				Rconfig.getInstance().id("layout_bottom"), bottom);
 		mFragmentTransaction.commit();
-
 		BaseManager.getIntance()
 				.setManager(getSupportFragmentManager());
 	}
