@@ -95,6 +95,9 @@ public class BaseManager {
 	public void setSlideMenuController(PhoneSlideMenuController controller) {
 		mSlideMenuController = controller;
 	}
+	public PhoneSlideMenuController getSlideMenuController() {
+		return mSlideMenuController;
+	}
 
 	public void setmMenuTopController(MenuTopController mMenuTopController) {
 		this.mMenuTopController = mMenuTopController;

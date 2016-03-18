@@ -51,7 +51,6 @@ public class PhoneSlideMenuController extends BaseController {
 		this.mListener = mListener;
 	}
 
-
 	@Override
 	public void onStart() {
 	}
@@ -69,7 +68,6 @@ public class PhoneSlideMenuController extends BaseController {
 
 		};
 
-
 		initial();
 	}
 
@@ -81,7 +79,10 @@ public class PhoneSlideMenuController extends BaseController {
 
 	public void initDataAdapter() {
 		addHome();
-		addCategory();
+		addSong();
+		addPlayList();
+		addWishList();
+		addVideo();
 	}
 
 	private void addHome() {
@@ -97,18 +98,61 @@ public class PhoneSlideMenuController extends BaseController {
 			mItems.add(item);
 		}
 	}
-	private void addCategory() {
-//		int index = checkElement(Constant.ITEM_ALBUMS);
-//		if (index == -1) {
-//			ItemNavigation item = new ItemNavigation();
-//			item.setName(Constant.ITEM_ALBUMS);
-//			int id_icon = Rconfig.getInstance().drawable("ic_menu_personal");
-//			Drawable icon = mContext.getResources().getDrawable(id_icon);
-//			icon.setColorFilter(Color.parseColor("#ffffff"),
-//					PorterDuff.Mode.SRC_ATOP);
-//			item.setDrawble(icon);
-//			mItems.add(item);
-//		}
+
+	private void addSong() {
+		int index = checkElement(Constant.ITEM_SONGS);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_SONGS);
+			int id_icon = Rconfig.getInstance().drawable("ic_song");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			icon.setColorFilter(Color.parseColor("#ffffff"),
+					PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
+	}
+
+	private void addPlayList() {
+		int index = checkElement(Constant.ITEM_PLAYLIST);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_PLAYLIST);
+			int id_icon = Rconfig.getInstance().drawable("ic_playlist");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			icon.setColorFilter(Color.parseColor("#ffffff"),
+					PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
+	}
+
+	private void addWishList() {
+		int index = checkElement(Constant.ITEM_WISHLIST);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_WISHLIST);
+			int id_icon = Rconfig.getInstance().drawable("ic_wishlist");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			icon.setColorFilter(Color.parseColor("#ffffff"),
+					PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
+	}
+
+	private void addVideo() {
+		int index = checkElement(Constant.ITEM_VIDEOS);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_VIDEOS);
+			int id_icon = Rconfig.getInstance().drawable("ic_video");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			icon.setColorFilter(Color.parseColor("#ffffff"),
+					PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
 	}
 
 	public void onNaviagte(int position) {
@@ -116,11 +160,17 @@ public class PhoneSlideMenuController extends BaseController {
 		if (null != item) {
 			BaseFragment fragment = null;
 			fragment = navigateNormal(item);
-			if(fragment != null) {
+			if (fragment != null) {
 				BaseManager.getIntance().replaceFragment(fragment);
 			}
 		}
 		mDelegate.onSelectedItem(position);
+		if (mCloseDelegate != null) {
+			mCloseDelegate.closeSlideMenu();
+		}
+	}
+	
+	public void closeSlideMenu() {
 		if (mCloseDelegate != null) {
 			mCloseDelegate.closeSlideMenu();
 		}
@@ -156,6 +206,6 @@ public class PhoneSlideMenuController extends BaseController {
 
 	@Override
 	public void onResume() {
-		
+
 	}
 }

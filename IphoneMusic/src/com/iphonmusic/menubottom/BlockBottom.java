@@ -1,13 +1,12 @@
 package com.iphonmusic.menubottom;
 
-import com.iphonmusic.config.Config;
-import com.iphonmusic.config.Rconfig;
-import com.iphonmusic.entity.EntitySong;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.entity.EntitySong;
 
 public class BlockBottom implements DelegateBottom {
 

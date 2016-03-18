@@ -8,6 +8,7 @@ import com.iphonmusic.slidemenu.controller.PhoneSlideMenuController;
 import com.iphonmusic.slidemenu.delegate.CloseSlideMenuDelegate;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class PhoneSlideMenuFragment extends BaseFragment {
 		View view = inflater.inflate(
 				Rconfig.getInstance().layout("core_phone_slide_menu"), null,
 				false);
+		view.setBackgroundColor(Color.parseColor("#ffffff"));
 		Context context = getActivity();
 		mBlock = new PhoneSlideMenuBlock(view, context);
 		mBlock.initView();

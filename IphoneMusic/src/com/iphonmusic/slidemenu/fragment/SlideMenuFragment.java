@@ -30,7 +30,7 @@ public class SlideMenuFragment extends BaseFragment implements CloseSlideMenuDel
 		rootView = inflater.inflate(
 				Rconfig.getInstance().getId(getActivity(),
 						"core_slidemenu_layout", "layout"), container, false);
-		rootView.setBackgroundColor(Color.parseColor("#05292929"));
+		rootView.setBackgroundColor(Color.parseColor("#ffffff"));
 		return rootView;
 	}
 	public void setup(int fragmentId, DrawerLayout drawerLayout) {
