@@ -42,7 +42,7 @@ public class MenuTopFragment extends BaseFragment{
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		rootView = inflater.inflate(Rconfig.getInstance().layout("core_menu_top"), container,false);
-//		rootView.setBackgroundColor(Config.getInstance().getColorMain());
+		rootView.setBackgroundColor(Config.getInstance().getColorMain());
 		Context mContext = getActivity();
 		mBlock = new MenuTopBlock(rootView, mContext);
 		mBlock.initView();

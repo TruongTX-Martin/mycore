@@ -1,8 +1,6 @@
 package com.iphonmusic.menutop.block;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
@@ -43,7 +41,6 @@ public class MenuTopBlock extends BaseBlock implements MenuTopDelegate{
 	private void initButtonMenu() {
 		imv_menu = (ImageView) mView.findViewById(Rconfig.getInstance().id(
 				"img_menu"));
-		imv_menu.setColorFilter(Color.parseColor("#000000"));
 		layout_cart = (RelativeLayout)mView.findViewById(Rconfig.getInstance().id("layout_cart"));
 	}
 	public void setOnTouchMenu(OnTouchListener touchMenu) {

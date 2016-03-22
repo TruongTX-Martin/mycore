@@ -1,12 +1,14 @@
 package com.iphonmusic.menubottom;
 
+import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Config;
+import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.entity.EntitySong;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.iphonmusic.config.Rconfig;
-import com.iphonmusic.entity.EntitySong;
 
 public class BlockBottom implements DelegateBottom {
 
@@ -20,15 +22,16 @@ public class BlockBottom implements DelegateBottom {
 	public BlockBottom(View view) {
 		this.mRootView = view;
 	}
-	
+
 	public void setOnPlayOnClickListener(OnClickListener listener) {
 		img_play.setOnClickListener(listener);
 	}
+
 	public void setOnNextOnClickListener(OnClickListener listener) {
 		img_next.setOnClickListener(listener);
 	}
-	
-	public void setOnLayoutClickListener(OnClickListener listener){
+
+	public void setOnLayoutClickListener(OnClickListener listener) {
 		mRootView.setOnClickListener(listener);
 	}
 
@@ -37,10 +40,14 @@ public class BlockBottom implements DelegateBottom {
 				"img_icon_play"));
 		img_next = (ImageView) mRootView.findViewById(Rconfig.getInstance().id(
 				"img_icon_next"));
-		txt_name_song = (TextView) mRootView.findViewById(Rconfig.getInstance().id("txt_song_name"));
-		txt_name_singer = (TextView) mRootView.findViewById(Rconfig.getInstance().id("txt_singer"));
+		txt_name_song = (TextView) mRootView.findViewById(Rconfig.getInstance()
+				.id("txt_song_name"));
+		txt_name_singer = (TextView) mRootView.findViewById(Rconfig
+				.getInstance().id("txt_singer"));
+		if (BaseManager.getIntance().getCurrentSong() != null) {
+			updateView(BaseManager.getIntance().getCurrentSong());
+		}
 	}
-	
 
 	@Override
 	public ImageView getImagePlay() {
@@ -54,9 +61,9 @@ public class BlockBottom implements DelegateBottom {
 
 	@Override
 	public void visibleRootView(boolean b) {
-		if(b){
+		if (b) {
 			mRootView.setVisibility(View.VISIBLE);
-		}else{
+		} else {
 			mRootView.setVisibility(View.GONE);
 		}
 	}

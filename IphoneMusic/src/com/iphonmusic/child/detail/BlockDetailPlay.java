@@ -6,6 +6,7 @@ import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.config.Utilities;
+import com.iphonmusic.entity.EntitySong;
 import com.iphonmusic.style.floatingbutton.FloatingActionButton;
 import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
 
@@ -79,6 +80,7 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 				.id("img_previous"));
 		seekBar = (SeekBar) rootView.findViewById(Rconfig.getInstance().id(
 				"seekbar"));
+		initFloatButton();
 		updateView();
 		BaseManager.getIntance().getPlayer().setOnCompletionListener(this);
 		seekBar.setOnSeekBarChangeListener(this);
@@ -87,8 +89,6 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 
 		// Updating progress bar
 		updateProgressBar();
-		initFloatButton();
-
 	}
 
 	private void initFloatButton() {
@@ -107,8 +107,6 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 		btn_to_wishlist = new FloatingActionButton(mContext);
 		btn_to_wishlist.setColorNormal(Color.parseColor("#FFFFFF"));
 		btn_to_wishlist.setColorPressed(Color.parseColor("#f4f4f4"));
-		btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
-				"ic_wishlist_add"));
 		mListButton.add(btn_to_wishlist);
 		// btn share
 		btn_share = new FloatingActionButton(mContext);
@@ -153,6 +151,24 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 				}
 			}
 		});
+		btn_to_wishlist.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (EntitySong.checkExitsSong(BaseManager.getIntance()
+						.getCurrentSong())) {
+					btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
+							"ic_wishlist_add"));
+					EntitySong.deleteItemWishList(BaseManager.getIntance()
+							.getCurrentSong());
+				} else {
+					btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
+							"ic_wishlist_added"));
+					EntitySong.addItemWishList(BaseManager.getIntance()
+							.getCurrentSong());
+				}
+			}
+		});
 	}
 
 	@Override
@@ -169,6 +185,14 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 			int total = BaseManager.getIntance().getPlayer().getDuration();
 			txt_end.setText(utilities.milliSecondsToTimer(total));
 		} catch (Exception e) {
+		}
+		if (EntitySong
+				.checkExitsSong(BaseManager.getIntance().getCurrentSong())) {
+			btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
+					"ic_wishlist_added"));
+		} else {
+			btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
+					"ic_wishlist_add"));
 		}
 	}
 
@@ -232,9 +256,9 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
-		if(Config.getInstance().getIsRepeat()) {
+		if (Config.getInstance().getIsRepeat()) {
 			BaseManager.getIntance().playMusic();
-		}else{
+		} else {
 			BaseManager.getIntance().nextSong();
 			updateView();
 		}

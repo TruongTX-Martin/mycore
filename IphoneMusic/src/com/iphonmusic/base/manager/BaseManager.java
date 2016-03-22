@@ -15,6 +15,7 @@ import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.entity.DatabaseHandler;
 import com.iphonmusic.entity.EntitySong;
 import com.iphonmusic.menubottom.ControllerBottom;
 import com.iphonmusic.menutop.controller.MenuTopController;
@@ -30,12 +31,21 @@ public class BaseManager {
 	private ControllerBottom mControllerBottom;
 	private EntitySong mCurrentSong;
 	private MediaPlayer mPlayer = new MediaPlayer();
+	
+	private DatabaseHandler databaseHandler;
 
 	public static BaseManager getIntance() {
 		if (null == instance) {
 			instance = new BaseManager();
 		}
 		return instance;
+	}
+	
+	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+		this.databaseHandler = databaseHandler;
+	}
+	public DatabaseHandler getDatabaseHandler() {
+		return databaseHandler;
 	}
 	
 	public MediaPlayer getPlayer() {
@@ -94,9 +104,6 @@ public class BaseManager {
 
 	public void setSlideMenuController(PhoneSlideMenuController controller) {
 		mSlideMenuController = controller;
-	}
-	public PhoneSlideMenuController getSlideMenuController() {
-		return mSlideMenuController;
 	}
 
 	public void setmMenuTopController(MenuTopController mMenuTopController) {

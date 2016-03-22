@@ -15,6 +15,7 @@ import android.util.Log;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.entity.DatabaseHandler;
 import com.iphonmusic.menubottom.FragmentBottom;
 import com.iphonmusic.menutop.fragment.MenuTopFragment;
 import com.iphonmusic.slidemenu.fragment.SlideMenuFragment;
@@ -27,6 +28,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		DatabaseHandler databaseHandler = new DatabaseHandler(this);
+		BaseManager.getIntance().setDatabaseHandler(databaseHandler);
 		BaseManager.getIntance().setCurrentActivity(this);
 		BaseManager.getIntance().setCurrentContext(
 				getApplicationContext());

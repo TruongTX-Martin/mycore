@@ -36,4 +36,5 @@ public class FragmentBottom extends BaseFragment {
 		blockBottom.setOnLayoutClickListener(controller.getOnLayoutListener());
 		return rootView;
 	}
+	
 }

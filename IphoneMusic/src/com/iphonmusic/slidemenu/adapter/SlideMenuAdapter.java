@@ -3,7 +3,6 @@ package com.iphonmusic.slidemenu.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,19 +49,16 @@ public class SlideMenuAdapter extends BaseAdapter {
 		convertView = inflater.inflate(
 				Rconfig.getInstance().layout("core_phone_slide_menu_item"),
 				null, false);
-		convertView.setBackgroundColor(Color.parseColor("#ffffff"));
 		ImageView img_icon = (ImageView) convertView.findViewById(Rconfig
 				.getInstance().id("img_icon"));
 		TextView txt_name = (TextView) convertView.findViewById(Rconfig
 				.getInstance().id("tv_name"));
-		
-		img_icon.setColorFilter(Color.parseColor("#000000"));
 
 		ItemNavigation item = (ItemNavigation) getItem(position);
 		String name = item.getName();
 		txt_name.setText(name);
 		txt_name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-		txt_name.setTextColor(Color.parseColor("#000000"));
+		
 		img_icon.setImageDrawable(item.getDrawble());
 		return convertView;
 	}
