@@ -12,6 +12,12 @@ public class Constant {
 	
 	
 	
+	public static final String TAG_WISHLISH = "wishlist";
+	public static final String TAG_PLAYLIST = "playlist";
+	
+	
+	
+	
 	/*Screen Name*/
 	public static final String SCREEN_HOME = "Home Screen";
 }

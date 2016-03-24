@@ -18,11 +18,12 @@ public class EntitySong {
 	private File song_file;
 	private String sone_singer;
 
-	// Contacts table name
+	// Song table name
 	public static final String TABLE_ITEMWISHLIST = "contacts";
 
-	// Contacts Table Columns names
+	// Song Table Columns names
 	public static final String KEY_ID = "song_id";
+	public static final String KEY_TAG = "song_tag";
 	public static final String KEY_SONG_NAME = "song_name";
 	public static final String KEY_SONG_URL = "song_url";
 	public static final String KEY_SONG_FILE = "song_file";
