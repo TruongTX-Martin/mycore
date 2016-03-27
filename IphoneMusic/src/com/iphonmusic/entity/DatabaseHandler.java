@@ -10,11 +10,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "iphonemusic";
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
-	String CREATE_WISHLIST_TABLE = "CREATE TABLE "
-			+ EntitySong.TABLE_ITEMWISHLIST + "(" + EntitySong.KEY_ID
-			+ " INTEGER PRIMARY KEY," + EntitySong.KEY_SONG_NAME + " TEXT,"
-			+ EntitySong.KEY_SONG_URL + " TEXT," + EntitySong.KEY_SONG_SINGER
-			+ " TEXT," + EntitySong.KEY_SONG_FILE + " TEXT" + ")";
+	String CREATE_SONG_TABLE = "CREATE TABLE " + EntitySong.TABLE_ITEMSONGS
+			+ "(" + EntitySong.KEY_ID + " INTEGER PRIMARY KEY,"
+			+ EntitySong.KEY_SONG_NAME + " TEXT," + EntitySong.KEY_SONG_URL
+			+ " TEXT," + EntitySong.KEY_SONG_SINGER + " TEXT,"
+			+ EntitySong.KEY_SONG_FILE + " TEXT," + EntitySong.KEY_TAG
+			+ " TEXT" + ")";
 
 	String CREATE_PLAYLIST_TABLE = "CREATE TABLE "
 			+ EntityPlaylist.TABLE_PLAYLIST + "(" + EntityPlaylist.PLAYLIST_ID
@@ -28,7 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-			db.execSQL(CREATE_WISHLIST_TABLE);
+			db.execSQL(CREATE_SONG_TABLE);
 			db.execSQL(CREATE_PLAYLIST_TABLE);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -38,7 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + EntitySong.TABLE_ITEMWISHLIST);
+		db.execSQL("DROP TABLE IF EXISTS " + EntitySong.TABLE_ITEMSONGS);
 		db.execSQL("DROP TABLE IF EXISTS " + EntityPlaylist.TABLE_PLAYLIST);
 		// Create tables again
 		onCreate(db);

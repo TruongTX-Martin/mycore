@@ -13,6 +13,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.iphonmusic.base.controller.BaseController;
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.child.playlist.FragmentPlaylist;
+import com.iphonmusic.child.songs.FragmentSongs;
+import com.iphonmusic.child.video.FragmentVideo;
+import com.iphonmusic.child.wishlist.FragmentWishlist;
 import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.fragment.FragmentHome;
@@ -183,7 +187,17 @@ public class PhoneSlideMenuController extends BaseController {
 		case Constant.ITEM_HOME:
 			fragment = FragmentHome.newInstance();
 			break;
-		case "Category":
+		case Constant.ITEM_SONGS:
+			fragment = FragmentSongs.newInstance();
+			break;
+		case Constant.ITEM_PLAYLIST:
+			fragment = FragmentPlaylist.newInstance();
+			break;
+		case Constant.ITEM_WISHLIST:
+			fragment = FragmentWishlist.newInstance();
+			break;
+		case Constant.ITEM_VIDEOS:
+			fragment = FragmentVideo.newInstance();
 			break;
 		default:
 			break;

@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Constant;
 
 public class EntitySong {
 
@@ -17,9 +18,9 @@ public class EntitySong {
 	private String song_url;
 	private File song_file;
 	private String sone_singer;
-
+	private String song_tag;
 	// Song table name
-	public static final String TABLE_ITEMWISHLIST = "contacts";
+	public static final String TABLE_ITEMSONGS = "iphonesong";
 
 	// Song Table Columns names
 	public static final String KEY_ID = "song_id";
@@ -30,6 +31,14 @@ public class EntitySong {
 	public static final String KEY_SONG_SINGER = "song_singer";
 
 	public EntitySong() {
+	}
+
+	public void setSong_tag(String song_tag) {
+		this.song_tag = song_tag;
+	}
+
+	public String getSong_tag() {
+		return song_tag;
 	}
 
 	public void setSong_singer(String sone_singer) {
@@ -73,8 +82,9 @@ public class EntitySong {
 			values.put(KEY_SONG_URL, song.getSong_url());
 			values.put(KEY_SONG_SINGER, song.getSong_singer());
 			values.put(KEY_SONG_FILE, song.getSong_file().toString());
+			values.put(KEY_TAG, Constant.TAG_WISHLISH);
 
-			database.insert(TABLE_ITEMWISHLIST, null, values);
+			database.insert(TABLE_ITEMSONGS, null, values);
 			database.close();
 			Log.e("ENtitySOng-====================>", "Add success");
 		} catch (Exception e) {
@@ -84,7 +94,7 @@ public class EntitySong {
 
 	public static ArrayList<EntitySong> getAllItemWishList() {
 		ArrayList<EntitySong> list = new ArrayList<EntitySong>();
-		String query = "SELECT * FROM " + TABLE_ITEMWISHLIST;
+		String query = "SELECT * FROM " + TABLE_ITEMSONGS;
 		SQLiteDatabase database = BaseManager.getIntance().getDatabaseHandler()
 				.getWritableDatabase();
 		Cursor cursor = database.rawQuery(query, null);
@@ -95,7 +105,10 @@ public class EntitySong {
 				entity.setSong_url(cursor.getString(2));
 				entity.setSong_singer(cursor.getString(3));
 				entity.setSong_file(new File(cursor.getString(4)));
+				entity.setSong_tag(cursor.getString(5));
+				if(entity.getSong_tag().equals(Constant.TAG_WISHLISH)){
 				list.add(entity);
+				}
 			} while (cursor.moveToNext());
 		}
 		return list;
@@ -104,16 +117,17 @@ public class EntitySong {
 	public static void deleteItemWishList(EntitySong song) {
 		SQLiteDatabase db = BaseManager.getIntance().getDatabaseHandler()
 				.getWritableDatabase();
-		db.delete(TABLE_ITEMWISHLIST, KEY_SONG_NAME + " = ?",
+		db.delete(TABLE_ITEMSONGS, KEY_SONG_NAME + " = ?",
 				new String[] { String.valueOf(song.getSong_name()) });
 		db.close();
 		Log.e("Delete Item Sucess========== >", "Success");
 	}
+
 	public static boolean checkExitsSong(EntitySong entitySong) {
 		List<EntitySong> list = getAllItemWishList();
-		if(list.size() > 0) {
+		if (list.size() > 0) {
 			for (EntitySong song : list) {
-				if(song.getSong_url().equals(entitySong.getSong_url())) {
+				if (song.getSong_url().equals(entitySong.getSong_url())) {
 					return true;
 				}
 			}
