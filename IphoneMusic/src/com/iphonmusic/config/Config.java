@@ -16,6 +16,7 @@ public class Config {
 	
 	private boolean isPlay = false;
 	private boolean isRepeat ;
+	private boolean isShuffle;
 
 	public static Config getInstance() {
 		if (null == instance) {
@@ -25,6 +26,12 @@ public class Config {
 		return instance;
 	}
 	
+	public void setShuffle(boolean input){
+		this.isShuffle = input;
+	}
+	public boolean getShuffle(){
+		return isShuffle;
+	}
 	public void setRepeat(boolean input) {
 		this.isRepeat  = input;
 	}

@@ -17,12 +17,13 @@ public class EntityPlaylist {
 	public static final String PLAYLIST_ID = "playlist_id";
 	public static final String PLAYLIST_NAME = "playlist_name";
 
-	
 	public EntityPlaylist() {
 	}
+
 	public EntityPlaylist(String name) {
 		this.playlistName = name;
 	}
+
 	public void setPlaylistName(String playlistName) {
 		this.playlistName = playlistName;
 	}
@@ -37,18 +38,19 @@ public class EntityPlaylist {
 					.getDatabaseHandler().getWritableDatabase();
 			ContentValues values = new ContentValues();
 			values.put(PLAYLIST_NAME, playlist.getPlaylistName());
-			if(!checkExitPlaylist(playlist)) {
+			if (!checkExitPlaylist(playlist)) {
 				database.insert(TABLE_PLAYLIST, null, values);
 			}
 			database.close();
 		} catch (Exception e) {
 		}
 	}
-	
+
 	private static boolean checkExitPlaylist(EntityPlaylist playlist) {
-		if(getAllPlayList().size() > 0) {
-			for(EntityPlaylist entityPlaylist : getAllPlayList()){
-				if(entityPlaylist.getPlaylistName().equals(playlist.getPlaylistName())) {
+		if (getAllPlayList().size() > 0) {
+			for (EntityPlaylist entityPlaylist : getAllPlayList()) {
+				if (entityPlaylist.getPlaylistName().equals(
+						playlist.getPlaylistName())) {
 					return true;
 				}
 			}
@@ -60,8 +62,8 @@ public class EntityPlaylist {
 		ArrayList<EntityPlaylist> playlists = new ArrayList<EntityPlaylist>();
 		try {
 			String query = "SELECT * FROM " + TABLE_PLAYLIST;
-			SQLiteDatabase database = BaseManager.getIntance().getDatabaseHandler()
-					.getWritableDatabase();
+			SQLiteDatabase database = BaseManager.getIntance()
+					.getDatabaseHandler().getWritableDatabase();
 			Cursor cursor = database.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
 				do {
@@ -73,8 +75,29 @@ public class EntityPlaylist {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		return playlists;
+	}
+
+	public static String getIdPlaylist(EntityPlaylist playlist) {
+		try {
+			String query = "SELECT * FROM " + TABLE_PLAYLIST;
+			SQLiteDatabase database = BaseManager.getIntance()
+					.getDatabaseHandler().getWritableDatabase();
+			Cursor cursor = database.rawQuery(query, null);
+			if (cursor.moveToFirst()) {
+				do {
+					if (cursor.getString(0) != null
+							&& cursor.getString(1).equals(
+									playlist.getPlaylistName())) {
+						return cursor.getString(0);
+					}
+				} while (cursor.moveToNext());
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return "";
 	}
 
 }

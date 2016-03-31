@@ -1,9 +1,12 @@
 package com.iphonmusic.child.detail;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Config;
+import com.iphonmusic.config.Constant;
+import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.config.Utilities;
 import com.iphonmusic.entity.EntitySong;
@@ -257,6 +260,13 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		if (Config.getInstance().getIsRepeat()) {
+			BaseManager.getIntance().playMusic();
+		} else if (Config.getInstance().getShuffle()) {
+			Random rand = new Random();
+			int currentSongIndex = rand.nextInt((Instance.LISTSONG_FOR_PLAY
+					.size() - 1) - 0 + 1) + 0;
+			BaseManager.getIntance().setCurrentSong(
+					Instance.LISTSONG_FOR_PLAY.get(currentSongIndex));
 			BaseManager.getIntance().playMusic();
 		} else {
 			BaseManager.getIntance().nextSong();

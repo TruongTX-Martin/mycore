@@ -70,11 +70,15 @@ public class FragmentPlaylist extends BaseFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				EntityPlaylist playlist = (EntityPlaylist) parent.getItemAtPosition(position);
+				String mId = EntityPlaylist.getIdPlaylist(playlist);
 				FragmentPlaylistDetail detail = FragmentPlaylistDetail
 						.newInstance();
+				detail.setIdPlaylist(mId);
 				BaseManager.getIntance().replaceFragment(detail);
 			}
 		});
+		BaseManager.getIntance().updateBottom();
 		return rootView;
 	}
 
@@ -129,6 +133,9 @@ public class FragmentPlaylist extends BaseFragment {
 			mAdapter = new AdapterPlayList(mContext, mPlayList);
 		}
 		listview.setAdapter(mAdapter);
+		BaseManager.getIntance().updateBottom();
 	}
+	
+	
 
 }

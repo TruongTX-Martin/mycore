@@ -1,6 +1,7 @@
 package com.iphonmusic.base.manager;
 
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
@@ -79,6 +80,10 @@ public class BaseManager {
 		return mControllerBottom;
 	}
 
+	public void updateBottom() {
+		mControllerBottom.updateView(mCurrentSong);
+	}
+
 	public void setCurrentActivity(Activity mCurrentActivity) {
 		this.mCurrentActivity = mCurrentActivity;
 	}
@@ -148,12 +153,18 @@ public class BaseManager {
 	}
 
 	public void nextSong() {
-		if (Instance.LISTSONG.size() > 0 && mCurrentSong != null) {
-			int current = Instance.LISTSONG.indexOf(mCurrentSong);
-			if (current < Instance.LISTSONG.size() - 1) {
-				setCurrentSong(Instance.LISTSONG.get(current + 1));
+		if (Instance.LISTSONG_FOR_PLAY.size() > 0 && mCurrentSong != null) {
+			int current = Instance.LISTSONG_FOR_PLAY.indexOf(mCurrentSong);
+			if (current < Instance.LISTSONG_FOR_PLAY.size() - 1) {
+				setCurrentSong(Instance.LISTSONG_FOR_PLAY.get(current + 1));
 			} else {
-				setCurrentSong(Instance.LISTSONG.get(0));
+				setCurrentSong(Instance.LISTSONG_FOR_PLAY.get(0));
+			}
+			if (Config.getInstance().getShuffle()) {
+				Random rand = new Random();
+				int currentSongIndex = rand.nextInt((Instance.LISTSONG_FOR_PLAY
+						.size() - 1) - 0 + 1) + 0;
+				setCurrentSong(Instance.LISTSONG_FOR_PLAY.get(currentSongIndex));
 			}
 			playMusic();
 
@@ -161,10 +172,10 @@ public class BaseManager {
 	}
 
 	public void previousSong() {
-		if (Instance.LISTSONG.size() > 0 && mCurrentSong != null) {
-			int current = Instance.LISTSONG.indexOf(mCurrentSong);
+		if (Instance.LISTSONG_FOR_PLAY.size() > 0 && mCurrentSong != null) {
+			int current = Instance.LISTSONG_FOR_PLAY.indexOf(mCurrentSong);
 			if (current > 0) {
-				setCurrentSong(Instance.LISTSONG.get(current - 1));
+				setCurrentSong(Instance.LISTSONG_FOR_PLAY.get(current - 1));
 			}
 			playMusic();
 		}
@@ -202,7 +213,9 @@ public class BaseManager {
 			String nameFragment = fragment.getClass().getName();
 			boolean isHome = false;
 			String screen_name = fragment.getScreenName();
-			if (null != screen_name && screen_name.equals(Constant.SCREEN_HOME)) {
+			if (nameFragment.contains("com.iphonmusic.fragment.FragmentHome")
+					|| nameFragment
+							.contains("com.iphonmusic.child.video.FragmentVideoDetail")) {
 				isHome = true;
 			}
 
@@ -219,10 +232,31 @@ public class BaseManager {
 			}
 			fragmentTransaction.replace(Rconfig.getInstance().id("container"),
 					fragment);
-			fragmentTransaction.addToBackStack(null);
+			fragmentTransaction.addToBackStack(nameFragment);
 			fragmentTransaction.commit();
 		}
 
+	}
+
+	public void backToPreviousFragment() {
+		mManager.popBackStack();
+	}
+
+	public boolean checkSongInListChoise(EntitySong song) {
+		if (Instance.LISTSONG_CHOISE.size() > 0) {
+			for (EntitySong entitySong : Instance.LISTSONG_CHOISE) {
+				if (entitySong.getSong_name().equals(song.getSong_name())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void removeSongInListChoise(EntitySong song) {
+		if (Instance.LISTSONG_CHOISE.size() > 0) {
+			Instance.LISTSONG_CHOISE.remove(song);
+		}
 	}
 
 }

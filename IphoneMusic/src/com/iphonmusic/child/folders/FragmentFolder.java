@@ -21,6 +21,7 @@ public class FragmentFolder extends BaseFragment {
 	private ListView listView;
 	final String MEDIA_PATH = Environment.getExternalStorageDirectory()
 			.getPath() + "/";
+
 	public static FragmentFolder newInstance() {
 		FragmentFolder fragment = new FragmentFolder();
 		return fragment;
@@ -45,34 +46,28 @@ public class FragmentFolder extends BaseFragment {
 		File listFile[] = dir.listFiles();
 		if (listFile != null && listFile.length > 0) {
 			for (File file : listFile) {
-				if (file != null && !file.isHidden()) {
-					if (file.isDirectory()) {
-						File[] fileDirectory = file.listFiles();
-						for(File file2 : fileDirectory) {
-							if(file2.isDirectory()){
-								getAllFolder(file2);
-							}
-							if(file2 != null && !file2.isHidden() && !file2.isDirectory()) {
-								if(file2.getName().endsWith(Pattern)){
-									EntityFolder folder = new EntityFolder();
-									folder.setFolder_name(file.getName());
-									folder.setFolder_url(file.getPath());
-									arrayList.add(folder);
-								}
-							}
-						}
+				if(file.isDirectory()){
+					if(checkFileHasMp3(file)){
+						EntityFolder folder = new EntityFolder();
+						folder.setFolder_name(file.getName());
+						folder.setFolder_url(file.getAbsolutePath());
+						arrayList.add(folder);
 					}else{
-						if(file.getName().endsWith(Pattern)){
-							EntityFolder folder = new EntityFolder();
-							folder.setFolder_name(file.getName());
-							folder.setFolder_url(file.getPath());
-							arrayList.add(folder);
-						}
+						getAllFolder(file);
 					}
 				}
 			}
 		}
 		return arrayList;
+	}
+	private boolean checkFileHasMp3(File file){
+		File[] array = file.listFiles();
+		for(int i=0; i < array.length; i++){
+			if(array[i].getName().endsWith(".mp3")){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

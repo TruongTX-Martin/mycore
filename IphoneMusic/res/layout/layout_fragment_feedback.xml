@@ -7,7 +7,7 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <com.iphonmusic.style.FloatLabel
+    <EditText
         android:id="@+id/float_label_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,17 +16,15 @@
         android:layout_marginTop="20dp"
         android:hint="Enter your email." />
 
-    <com.iphonmusic.style.FloatLabel
-        android:id="@+id/float_label_content"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="20dp"
-        android:maxLines="20"
-        android:lines="5"
-        android:hint="Enter your content feedback." />
-
+	<EditText
+	    android:id="@+id/edt_content"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:lines="5"
+	    android:maxLines="20"
+	    android:layout_margin="5dp"
+	    android:hint="Enter your content feedback"
+	    />   
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"

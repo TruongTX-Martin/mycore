@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			+ EntitySong.KEY_SONG_NAME + " TEXT," + EntitySong.KEY_SONG_URL
 			+ " TEXT," + EntitySong.KEY_SONG_SINGER + " TEXT,"
 			+ EntitySong.KEY_SONG_FILE + " TEXT," + EntitySong.KEY_TAG
-			+ " TEXT" + ")";
+			+ " TEXT," + EntitySong.KEY_PLAYLIST_ID + " TEXT" + ")";
 
 	String CREATE_PLAYLIST_TABLE = "CREATE TABLE "
 			+ EntityPlaylist.TABLE_PLAYLIST + "(" + EntityPlaylist.PLAYLIST_ID

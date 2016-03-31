@@ -1,7 +1,5 @@
 package com.iphonmusic.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -9,34 +7,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntitySong;
 
 public class AdapterSongsChoise extends BaseAdapter{
 
 	private Context mContext;
-	private ArrayList<EntitySong> listSong = new ArrayList<EntitySong>();
 	private Drawable icon_appble;
-	private Drawable icon_extend;
 
-	public AdapterSongsChoise(Context context, ArrayList<EntitySong> arrayList) {
+	public AdapterSongsChoise(Context context) {
 		this.mContext = context;
-		this.listSong = arrayList;
 	}
 
 	@Override
 	public int getCount() {
-		return listSong.size();
+		return Instance.LISTSONG.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return listSong.get(position);
+		return Instance.LISTSONG.get(position);
 	}
 
 	@Override
@@ -64,18 +58,20 @@ public class AdapterSongsChoise extends BaseAdapter{
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		EntitySong song = listSong.get(position);
+		EntitySong song = Instance.LISTSONG.get(position);
 		if (icon_appble == null) {
 			icon_appble = mContext.getResources().getDrawable(
 					Rconfig.getInstance().drawable("ic_appble"));
 		}
 		holder.img_icon.setImageDrawable(icon_appble);
 
-		if (icon_extend == null) {
-			icon_extend = mContext.getResources().getDrawable(
-					Rconfig.getInstance().drawable("ic_unchecked"));
+		if(song.getCheck()){
+			holder.img_check.setImageDrawable(mContext.getResources().getDrawable(
+					Rconfig.getInstance().drawable("ic_checked")));
+		}else{
+			holder.img_check.setImageDrawable(mContext.getResources().getDrawable(
+					Rconfig.getInstance().drawable("ic_unchecked")));
 		}
-		holder.img_check.setImageDrawable(icon_extend);
 		holder.img_check.setColorFilter(Color.parseColor("#000000"));
 
 		holder.txt_song_name.setText(song.getSong_name());

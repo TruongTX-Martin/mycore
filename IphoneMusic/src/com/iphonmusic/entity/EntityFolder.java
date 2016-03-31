@@ -4,6 +4,7 @@ public class EntityFolder {
 
 	private String folder_name;
 	private String folder_url;
+	
 
 	public EntityFolder() {
 	}

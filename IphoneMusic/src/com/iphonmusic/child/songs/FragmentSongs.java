@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -17,10 +18,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -28,6 +32,7 @@ import android.widget.SearchView.OnQueryTextListener;
 import com.iphonmusic.adapter.AdapterSongs;
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntitySong;
@@ -41,6 +46,8 @@ public class FragmentSongs extends BaseFragment {
 	private AdapterSongs mAdapter;
 	private Context mContext;
 	private EditText edt_search;
+	private ImageView img_shuffle;
+	private LinearLayout layout_shuffle;
 
 	public static FragmentSongs newInstance() {
 		FragmentSongs fragment = new FragmentSongs();
@@ -58,6 +65,11 @@ public class FragmentSongs extends BaseFragment {
 				"listview"));
 		edt_search = (EditText) rootView.findViewById(Rconfig.getInstance().id(
 				"edt_search"));
+		img_shuffle = (ImageView) rootView.findViewById(Rconfig.getInstance().id(
+				"img_shuffle"));
+		layout_shuffle = (LinearLayout) rootView.findViewById(Rconfig.getInstance().id(
+				"ll_shuffle"));
+		refesh();
 		if (Instance.LISTSONG.size() == 0) {
 			getListSongs(new File(MEDIA_PATH));
 		} else {
@@ -69,7 +81,16 @@ public class FragmentSongs extends BaseFragment {
 			}
 		}
 		handleEvent();
+		BaseManager.getIntance().updateBottom();
 		return rootView;
+	}
+	
+	private void refesh(){
+		if(Config.getInstance().getShuffle()){
+			img_shuffle.setColorFilter(Color.BLACK);
+		}else{
+			img_shuffle.setColorFilter(Color.GRAY);
+		}
 	}
 
 	private void handleEvent() {
@@ -98,10 +119,25 @@ public class FragmentSongs extends BaseFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				Instance.LISTSONG_FOR_PLAY = Instance.LISTSONG;
 				EntitySong song = (EntitySong) parent
 						.getItemAtPosition(position);
 				BaseManager.getIntance().setCurrentSong(song);
 				BaseManager.getIntance().playMusic();
+			}
+		});
+		layout_shuffle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(Config.getInstance().getShuffle()){
+					img_shuffle.setColorFilter(Color.GRAY);
+					Config.getInstance().setShuffle(false);
+				}else{
+					img_shuffle.setColorFilter(Color.BLACK);
+					Config.getInstance().setShuffle(true);
+				}
+				
 			}
 		});
 	}
@@ -144,6 +180,7 @@ public class FragmentSongs extends BaseFragment {
 			mAdapter = new AdapterSongs(mContext, Instance.LISTSONG);
 			mListView.setAdapter(mAdapter);
 		}
+		Instance.LISTSONG_FOR_PLAY = Instance.LISTSONG;
 	}
 
 	@Override
@@ -155,5 +192,7 @@ public class FragmentSongs extends BaseFragment {
 		} else {
 			mListView.setAdapter(mAdapter);
 		}
+		refesh();
+		BaseManager.getIntance().updateBottom();
 	}
 }
