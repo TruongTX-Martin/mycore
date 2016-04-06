@@ -3,14 +3,21 @@ package com.iphonmusic.child.folders;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.iphonmusic.base.delegate.ModelDelegate;
 import com.iphonmusic.base.fragment.BaseFragment;
+import com.iphonmusic.base.network.response.CoreResponse;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntityFolder;
@@ -35,11 +42,44 @@ public class FragmentFolder extends BaseFragment {
 				container, false);
 		listView = (ListView) rootView.findViewById(Rconfig.getInstance().id(
 				"listview"));
-		ArrayList<EntityFolder> arrayList = getAllFolder(new File(MEDIA_PATH));
-		System.out.println(arrayList);
+//		ArrayList<EntityFolder> arrayList = getAllFolder(new File(MEDIA_PATH));
+//		System.out.println(arrayList);
+		request();
 		return rootView;
 	}
+	
+	private void request(){
+		MyModel mModel = new MyModel();
+		mModel.setModelDelegate(new ModelDelegate() {
+			
+			@Override
+			public void callBack(CoreResponse coreResponse, boolean isSuccess) {
+				System.out.println(coreResponse);
+				parserData(coreResponse.getData());
+			}
+		});
+		mModel.request();
+	}
 
+	private Document mDocument;
+	private void parserData(String html){
+		mDocument = Jsoup.parse(html);
+//		Log.e("HTML return ======================>:", html);
+		longInfo(html);
+		Elements eSlide = mDocument.select(".slick-track");
+//		System.out.println(eSlide);
+		Elements tagA = eSlide.select("a");
+//		System.out.println(tagA);
+	}
+	public void longInfo(String str) {
+        if(str.length() > 4000) {
+            Log.i("",str.substring(0, 4000));
+            longInfo(str.substring(4000));
+        } else
+            Log.i("",str);
+    } 
+	
+	
 	private ArrayList<EntityFolder> getAllFolder(File dir) {
 		String Pattern = ".mp3";
 		ArrayList<EntityFolder> arrayList = new ArrayList<EntityFolder>();

@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.slidemenu.entity.ItemNavigation;
 
@@ -55,8 +56,6 @@ public class SlideMenuAdapter extends BaseAdapter {
 				.getInstance().id("img_icon"));
 		TextView txt_name = (TextView) convertView.findViewById(Rconfig
 				.getInstance().id("tv_name"));
-		
-		img_icon.setColorFilter(Color.parseColor("#000000"));
 
 		ItemNavigation item = (ItemNavigation) getItem(position);
 		String name = item.getName();
@@ -64,6 +63,9 @@ public class SlideMenuAdapter extends BaseAdapter {
 		txt_name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		txt_name.setTextColor(Color.parseColor("#000000"));
 		img_icon.setImageDrawable(item.getDrawble());
+		if (name.equals(Constant.ITEM_HOME)) {
+			img_icon.setColorFilter(Color.parseColor("#000000"));
+		}
 		return convertView;
 	}
 }

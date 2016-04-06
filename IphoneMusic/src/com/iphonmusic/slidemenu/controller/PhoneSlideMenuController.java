@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.iphonmusic.base.controller.BaseController;
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.child.mp3zing.FragmentMp3Zing;
 import com.iphonmusic.child.playlist.FragmentPlaylist;
 import com.iphonmusic.child.songs.FragmentSongs;
 import com.iphonmusic.child.video.FragmentVideo;
@@ -83,10 +84,7 @@ public class PhoneSlideMenuController extends BaseController {
 
 	public void initDataAdapter() {
 		addHome();
-		addSong();
-		addPlayList();
-		addWishList();
-		addVideo();
+		addZingMP3();
 	}
 
 	private void addHome() {
@@ -102,62 +100,24 @@ public class PhoneSlideMenuController extends BaseController {
 			mItems.add(item);
 		}
 	}
-
-	private void addSong() {
-		int index = checkElement(Constant.ITEM_SONGS);
+	
+	private void addZingMP3(){
+		int index = checkElement(Constant.ITEM_MP3_ZING);
 		if (index == -1) {
 			ItemNavigation item = new ItemNavigation();
-			item.setName(Constant.ITEM_SONGS);
-			int id_icon = Rconfig.getInstance().drawable("ic_song");
+			item.setName(Constant.ITEM_MP3_ZING);
+			int id_icon = Rconfig.getInstance().drawable("ic_zingmp3");
 			Drawable icon = mContext.getResources().getDrawable(id_icon);
-			icon.setColorFilter(Color.parseColor("#ffffff"),
-					PorterDuff.Mode.SRC_ATOP);
+//			icon.setColorFilter(Color.parseColor("#ffffff"),
+//					PorterDuff.Mode.SRC_ATOP);
 			item.setDrawble(icon);
 			mItems.add(item);
 		}
 	}
 
-	private void addPlayList() {
-		int index = checkElement(Constant.ITEM_PLAYLIST);
-		if (index == -1) {
-			ItemNavigation item = new ItemNavigation();
-			item.setName(Constant.ITEM_PLAYLIST);
-			int id_icon = Rconfig.getInstance().drawable("ic_playlist");
-			Drawable icon = mContext.getResources().getDrawable(id_icon);
-			icon.setColorFilter(Color.parseColor("#ffffff"),
-					PorterDuff.Mode.SRC_ATOP);
-			item.setDrawble(icon);
-			mItems.add(item);
-		}
-	}
 
-	private void addWishList() {
-		int index = checkElement(Constant.ITEM_WISHLIST);
-		if (index == -1) {
-			ItemNavigation item = new ItemNavigation();
-			item.setName(Constant.ITEM_WISHLIST);
-			int id_icon = Rconfig.getInstance().drawable("ic_wishlist");
-			Drawable icon = mContext.getResources().getDrawable(id_icon);
-			icon.setColorFilter(Color.parseColor("#ffffff"),
-					PorterDuff.Mode.SRC_ATOP);
-			item.setDrawble(icon);
-			mItems.add(item);
-		}
-	}
 
-	private void addVideo() {
-		int index = checkElement(Constant.ITEM_VIDEOS);
-		if (index == -1) {
-			ItemNavigation item = new ItemNavigation();
-			item.setName(Constant.ITEM_VIDEOS);
-			int id_icon = Rconfig.getInstance().drawable("ic_video");
-			Drawable icon = mContext.getResources().getDrawable(id_icon);
-			icon.setColorFilter(Color.parseColor("#ffffff"),
-					PorterDuff.Mode.SRC_ATOP);
-			item.setDrawble(icon);
-			mItems.add(item);
-		}
-	}
+	
 
 	public void onNaviagte(int position) {
 		ItemNavigation item = mItems.get(position);
@@ -187,17 +147,11 @@ public class PhoneSlideMenuController extends BaseController {
 		case Constant.ITEM_HOME:
 			fragment = FragmentHome.newInstance();
 			break;
-		case Constant.ITEM_SONGS:
-			fragment = FragmentSongs.newInstance();
+		case Constant.ITEM_MP3_ZING:
+			fragment = FragmentMp3Zing.newInstance();
 			break;
 		case Constant.ITEM_PLAYLIST:
 			fragment = FragmentPlaylist.newInstance();
-			break;
-		case Constant.ITEM_WISHLIST:
-			fragment = FragmentWishlist.newInstance();
-			break;
-		case Constant.ITEM_VIDEOS:
-			fragment = FragmentVideo.newInstance();
 			break;
 		default:
 			break;

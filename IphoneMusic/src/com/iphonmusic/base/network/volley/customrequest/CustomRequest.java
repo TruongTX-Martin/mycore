@@ -19,7 +19,6 @@ import com.iphonmusic.config.Config;
 
 public class CustomRequest extends StringRequest {
 
-	private Map<String, String> mParam = new HashMap<String, String>();
 	private Map<String, String> mHeaders = new HashMap<>();
 	private String url = "";
 
@@ -31,62 +30,12 @@ public class CustomRequest extends StringRequest {
 
 	@Override
 	public Map<String, String> getHeaders() throws AuthFailureError {
-//		mHeaders.put("Token", Config.getInstance().getSecretKey());
-//		mHeaders.put("Cookie", AppController.getCookie(SimiManager.getIntance()
-//				.getCurrentContext()));
-		mHeaders.put("Cookie", VolleyConstant.COOKIE);
-		if (VolleyConstant.HASHMAP_RESPONSE.size() > 0) {
-			// if (VolleyConstant.HASHMAP_RESPONSE.containsKey("CF-RAY")) {
-			// mHeaders.put("CF-RAY",
-			// VolleyConstant.HASHMAP_RESPONSE.get("CF-RAY"));
-			// }
-//			if (VolleyConstant.HASHMAP_RESPONSE.containsKey("Host-Header")) {
-//				mHeaders.put("Authorization",
-//						VolleyConstant.HASHMAP_RESPONSE.get("Host-Header"));
-//			}
-		}
 		return mHeaders;
-	}
-
-	public void setParams(JSONObject object) {
-		mParam.put("data", object.toString());
-	}
-
-	@Override
-	protected Map<String, String> getParams() throws AuthFailureError {
-		return mParam;
 	}
 
 	@Override
 	protected Response<String> parseNetworkResponse(NetworkResponse response) {
-		Map header = response.headers;
-		Header[] arrayHeader = response.apacheHeaders;
-		for (Header header2 : arrayHeader) {
-			Log.e("HeaderArray:", header2.toString());
-			String header_string = header2.toString();
-			if (header_string.contains("CF-RAY")) {
-				VolleyConstant.HASHMAP_RESPONSE.put("CF-RAY", header_string
-						.substring(header_string.indexOf(":") + 1,
-								header_string.length()));
-			}
-			if (header_string.contains("Host-Header")) {
-				VolleyConstant.HASHMAP_RESPONSE.put("Host-Header",
-						header_string.substring(header_string.indexOf(":") + 1,
-								header_string.length()));
-			}
-			if (header_string.contains("Set-Cookie")) {
-				String cookie = header_string.substring(
-						header_string.indexOf(":") + 1, header_string.length())
-						.trim();
-				if (!VolleyConstant.COOKIE.contains(cookie)) {
-					VolleyConstant.COOKIE += cookie + ";";
-				}
-			}
-		}
-		Log.e("ArrayHeader:", arrayHeader + "");
-		String cookie = (String) header.get("Set-Cookie");
-//		AppController.saveCookie(SimiManager.getIntance().getCurrentContext(),
-//				cookie, url);
+
 		return super.parseNetworkResponse(response);
 	}
 }

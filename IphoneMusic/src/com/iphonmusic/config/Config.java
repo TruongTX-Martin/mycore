@@ -17,6 +17,8 @@ public class Config {
 	private boolean isPlay = false;
 	private boolean isRepeat ;
 	private boolean isShuffle;
+	
+	private String url_mp3zing = "http://mp3.zing.vn/";
 
 	public static Config getInstance() {
 		if (null == instance) {
@@ -26,6 +28,10 @@ public class Config {
 		return instance;
 	}
 	
+	
+	public String getUrl_mp3zing() {
+		return url_mp3zing;
+	}
 	public void setShuffle(boolean input){
 		this.isShuffle = input;
 	}

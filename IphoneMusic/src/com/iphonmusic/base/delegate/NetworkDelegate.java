@@ -1,7 +1,7 @@
 package com.iphonmusic.base.delegate;
 
-import com.iphonmusic.base.network.response.BaseResponse;
+import com.iphonmusic.base.network.response.CoreResponse;
 
 public interface NetworkDelegate {
-	public abstract void callBack(BaseResponse coreResponse, boolean isSuccess);
+	public abstract void callBack(CoreResponse coreResponse, boolean isSuccess);
 }
