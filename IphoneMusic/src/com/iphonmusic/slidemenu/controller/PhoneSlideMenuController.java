@@ -85,6 +85,8 @@ public class PhoneSlideMenuController extends BaseController {
 	public void initDataAdapter() {
 		addHome();
 		addZingMP3();
+		addNhacCuaTui();
+		addKeeng();
 	}
 
 	private void addHome() {
@@ -100,24 +102,49 @@ public class PhoneSlideMenuController extends BaseController {
 			mItems.add(item);
 		}
 	}
-	
-	private void addZingMP3(){
+
+	private void addZingMP3() {
 		int index = checkElement(Constant.ITEM_MP3_ZING);
 		if (index == -1) {
 			ItemNavigation item = new ItemNavigation();
 			item.setName(Constant.ITEM_MP3_ZING);
 			int id_icon = Rconfig.getInstance().drawable("ic_zingmp3");
 			Drawable icon = mContext.getResources().getDrawable(id_icon);
-//			icon.setColorFilter(Color.parseColor("#ffffff"),
-//					PorterDuff.Mode.SRC_ATOP);
+			// icon.setColorFilter(Color.parseColor("#ffffff"),
+			// PorterDuff.Mode.SRC_ATOP);
 			item.setDrawble(icon);
 			mItems.add(item);
 		}
 	}
 
+	private void addNhacCuaTui() {
+		int index = checkElement(Constant.ITEM_NHACUATUI);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_NHACUATUI);
+			int id_icon = Rconfig.getInstance().drawable("ic_nhacuatui");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			// icon.setColorFilter(Color.parseColor("#ffffff"),
+			// PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
+	}
 
+	private void addKeeng() {
+		int index = checkElement(Constant.ITEM_KEENG);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_KEENG);
+			int id_icon = Rconfig.getInstance().drawable("ic_keeng");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			// icon.setColorFilter(Color.parseColor("#ffffff"),
+			// PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
+	}
 
-	
 
 	public void onNaviagte(int position) {
 		ItemNavigation item = mItems.get(position);
@@ -133,7 +160,7 @@ public class PhoneSlideMenuController extends BaseController {
 			mCloseDelegate.closeSlideMenu();
 		}
 	}
-	
+
 	public void closeSlideMenu() {
 		if (mCloseDelegate != null) {
 			mCloseDelegate.closeSlideMenu();

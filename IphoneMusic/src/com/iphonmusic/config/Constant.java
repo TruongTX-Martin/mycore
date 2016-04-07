@@ -15,6 +15,8 @@ public class Constant {
 	
 	
 	public static final String ITEM_MP3_ZING = "Zing MP3";
+	public static final String ITEM_NHACUATUI = "NhacCuaTui";
+	public static final String ITEM_KEENG = "Keeng";
 	/*Screen Name*/
 	public static final String SCREEN_HOME = "Home Screen";
 	

@@ -30,6 +30,7 @@ public class FragmentMp3Zing extends BaseFragment {
 		
 		ControllerZingMp3 mController = new ControllerZingMp3();
 		mController.setDelegate(block);
+		mController.request("nhac hot");
 		
 		block.setOnKeyEdittext(mController.getOnKeyListenerEditText());
 		

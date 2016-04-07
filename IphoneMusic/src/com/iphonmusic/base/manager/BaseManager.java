@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.config.Config;
@@ -256,6 +258,18 @@ public class BaseManager {
 	public void removeSongInListChoise(EntitySong song) {
 		if (Instance.LISTSONG_CHOISE.size() > 0) {
 			Instance.LISTSONG_CHOISE.remove(song);
+		}
+	}
+	public void hideKeyBoard(){
+		try {
+			if (mCurrentActivity != null) {
+				InputMethodManager imm = (InputMethodManager) mCurrentActivity
+						.getSystemService(Service.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(mCurrentActivity.getCurrentFocus()
+						.getWindowToken(), 0);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 

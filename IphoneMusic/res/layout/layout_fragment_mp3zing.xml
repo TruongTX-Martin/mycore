@@ -39,45 +39,51 @@
     <RelativeLayout
         android:id="@+id/rlt_banner_mp3"
         android:layout_width="match_parent"
-        android:layout_below="@+id/rlt_search"
         android:layout_height="150dp"
-        android:layout_margin="5dp" 
-        >
+        android:layout_below="@+id/rlt_search"
+        android:layout_margin="5dp" >
 
         <ImageView
             android:id="@+id/img_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_banner_zingmp3"
             android:scaleType="fitXY"
-             />
+            android:src="@drawable/ic_banner_zingmp3" />
     </RelativeLayout>
-    
+
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#CACACA"
         android:layout_below="@+id/rlt_banner_mp3"
-        />
+        android:background="#CACACA" />
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/view"
-        />
-    
+        android:scrollbars="none"
+        android:layout_below="@+id/view" />
+
     <TextView
         android:id="@+id/txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:layout_centerHorizontal="true"
-        android:textSize="15dp"
-        android:text="No item song"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="200dp"
-        />
+        android:text="Không tìm thấy bài hát nào"
+        android:textColor="#000000"
+        android:textSize="15dp" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="200dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

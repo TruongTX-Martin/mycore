@@ -53,7 +53,7 @@ public class BaseModel {
 	public void request() {
 		initRequest();
 		mCoreRequest = new CoreRequest(mNetworkDelegate);
-		mCoreRequest.request(url_request);
+		mCoreRequest.request(mHashMap);
 	}
 
 	private void initRequest() {
