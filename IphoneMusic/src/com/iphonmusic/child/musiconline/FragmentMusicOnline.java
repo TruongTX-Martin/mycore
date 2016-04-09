@@ -1,4 +1,4 @@
-package com.iphonmusic.child.mp3zing;
+package com.iphonmusic.child.musiconline;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,12 +10,16 @@ import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Rconfig;
 
-public class FragmentMp3Zing extends BaseFragment {
+public class FragmentMusicOnline extends BaseFragment {
 	
 	private Context mContext;
+	private static String mSiteName;
 	
-	public static FragmentMp3Zing newInstance() {
-		FragmentMp3Zing mp3Zing = new FragmentMp3Zing();
+	
+	
+	public static FragmentMusicOnline newInstance(String siteName) {
+		FragmentMusicOnline mp3Zing = new FragmentMusicOnline();
+		mSiteName = siteName;
 		return mp3Zing;
 	}
 
@@ -26,10 +30,12 @@ public class FragmentMp3Zing extends BaseFragment {
 		View rootView = inflater.inflate(
 				Rconfig.getInstance().layout("layout_fragment_mp3zing"),
 				container, false);
-		BlockZingMp3 block = new BlockZingMp3(rootView,mContext);
-		
-		ControllerZingMp3 mController = new ControllerZingMp3();
+		BlockMusicOnline block = new BlockMusicOnline(rootView,mContext);
+		block.setSiteName(mSiteName);
+		block.initView();
+		ControllerMusicOnline mController = new ControllerMusicOnline();
 		mController.setDelegate(block);
+		mController.setSiteName(mSiteName);
 		mController.request("nhac hot");
 		
 		block.setOnKeyEdittext(mController.getOnKeyListenerEditText());

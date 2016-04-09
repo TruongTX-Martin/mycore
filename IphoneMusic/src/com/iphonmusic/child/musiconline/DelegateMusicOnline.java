@@ -1,8 +1,8 @@
-package com.iphonmusic.child.mp3zing;
+package com.iphonmusic.child.musiconline;
 
 import android.widget.EditText;
 
-public interface DelegateZingMp3 {
+public interface DelegateMusicOnline {
 	
 	public EditText getEditTextSearch();
 	

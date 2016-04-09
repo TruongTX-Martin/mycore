@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.iphonmusic.R;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntityZingMp3;
 
@@ -59,10 +60,17 @@ public class AdapterZingMp3 extends BaseAdapter {
 		}
 		EntityZingMp3 zingMp3 = (EntityZingMp3) getItem(position);
 		if (zingMp3.getzTitle() != null) {
-			holder.txt_song_name.setText(zingMp3.getzTitle());
+			if (zingMp3.getzArtist() != null) {
+				holder.txt_song_name.setText(zingMp3.getzTitle() + " - "
+						+ zingMp3.getzArtist());
+			} else {
+				holder.txt_song_name.setText(zingMp3.getzTitle());
+			}
 		}
-		if(zingMp3.getzAvatar() != null){
-			Glide.with(mContext).load(zingMp3.getzAvatar()).centerCrop().into(holder.img_icon);
+		if (zingMp3.getzAvatar() != null) {
+			Glide.with(mContext).load(zingMp3.getzAvatar()).centerCrop()
+					.placeholder(R.drawable.ic_music_item)
+					.into(holder.img_icon);
 		}
 		return convertView;
 	}

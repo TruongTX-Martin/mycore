@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:background="#ffffff"
             android:choiceMode="singleChoice"
-            android:divider="#08FFFFFF"
+            android:divider="#CACACA"
             android:dividerHeight="1dp" >
         </ListView>
     </LinearLayout>

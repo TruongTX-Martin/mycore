@@ -13,11 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.iphonmusic.base.controller.BaseController;
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
-import com.iphonmusic.child.mp3zing.FragmentMp3Zing;
-import com.iphonmusic.child.playlist.FragmentPlaylist;
-import com.iphonmusic.child.songs.FragmentSongs;
-import com.iphonmusic.child.video.FragmentVideo;
-import com.iphonmusic.child.wishlist.FragmentWishlist;
+import com.iphonmusic.child.musiconline.FragmentMusicOnline;
 import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.fragment.FragmentHome;
@@ -86,7 +82,6 @@ public class PhoneSlideMenuController extends BaseController {
 		addHome();
 		addZingMP3();
 		addNhacCuaTui();
-		addKeeng();
 	}
 
 	private void addHome() {
@@ -131,20 +126,6 @@ public class PhoneSlideMenuController extends BaseController {
 		}
 	}
 
-	private void addKeeng() {
-		int index = checkElement(Constant.ITEM_KEENG);
-		if (index == -1) {
-			ItemNavigation item = new ItemNavigation();
-			item.setName(Constant.ITEM_KEENG);
-			int id_icon = Rconfig.getInstance().drawable("ic_keeng");
-			Drawable icon = mContext.getResources().getDrawable(id_icon);
-			// icon.setColorFilter(Color.parseColor("#ffffff"),
-			// PorterDuff.Mode.SRC_ATOP);
-			item.setDrawble(icon);
-			mItems.add(item);
-		}
-	}
-
 
 	public void onNaviagte(int position) {
 		ItemNavigation item = mItems.get(position);
@@ -175,10 +156,10 @@ public class PhoneSlideMenuController extends BaseController {
 			fragment = FragmentHome.newInstance();
 			break;
 		case Constant.ITEM_MP3_ZING:
-			fragment = FragmentMp3Zing.newInstance();
+			fragment = FragmentMusicOnline.newInstance(Constant.ITEM_MP3_ZING);
 			break;
-		case Constant.ITEM_PLAYLIST:
-			fragment = FragmentPlaylist.newInstance();
+		case Constant.ITEM_NHACUATUI:
+			fragment = FragmentMusicOnline.newInstance(Constant.ITEM_NHACUATUI);
 			break;
 		default:
 			break;

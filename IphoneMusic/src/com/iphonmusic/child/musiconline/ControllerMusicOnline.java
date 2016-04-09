@@ -1,33 +1,33 @@
-package com.iphonmusic.child.mp3zing;
+package com.iphonmusic.child.musiconline;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
 
 import com.iphonmusic.base.delegate.ModelDelegate;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.base.network.response.CoreResponse;
 import com.iphonmusic.config.Constant;
-import com.iphonmusic.entity.EntityZingMp3;
 
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnKeyListener;
-import android.widget.Toast;
+public class ControllerMusicOnline {
 
-public class ControllerZingMp3 {
-
-	private DelegateZingMp3 mDelegate;
+	private DelegateMusicOnline mDelegate;
 	private OnKeyListener onKeyListener;
+	private String mSiteName;
 
-	public void setDelegate(DelegateZingMp3 mDelegate) {
+	public void setDelegate(DelegateMusicOnline mDelegate) {
 		this.mDelegate = mDelegate;
+	}
+	
+	public void setSiteName(String mSiteName) {
+		this.mSiteName = mSiteName;
 	}
 
 	public OnKeyListener getOnKeyListenerEditText() {
 		return onKeyListener;
 	}
 
-	public ControllerZingMp3() {
+	public ControllerMusicOnline() {
 		initListener();
 	}
 
@@ -42,7 +42,7 @@ public class ControllerZingMp3 {
 							.toString();
 					BaseManager.getIntance().hideKeyBoard();
 					if (query.length() > 0) {
-						request(query);
+						request(query.trim());
 					}
 					return true;
 				}
@@ -53,7 +53,7 @@ public class ControllerZingMp3 {
 
 	public void request(String query) {
 		mDelegate.updateProgressBar(true);
-		ModelZingMp3  mModel = new ModelZingMp3();
+		ModelMusicOnline  mModel = new ModelMusicOnline();
 		mModel.setModelDelegate(new ModelDelegate() {
 			
 			@Override
@@ -69,7 +69,15 @@ public class ControllerZingMp3 {
 		}else{
 			mModel.addParam("k", query);
 		}
-		mModel.addParam("h", Constant.SITE_MP3_ZING);
+		if(mSiteName.equals(Constant.ITEM_MP3_ZING)){
+			mModel.addParam("h", Constant.SITE_MP3_ZING);
+		}
+		if(mSiteName.equals(Constant.ITEM_NHACUATUI)){
+			mModel.addParam("h", Constant.SITE_NHAC_CUA_TUI);
+		}
+		if(mSiteName.equals(Constant.ITEM_KEENG)){
+			mModel.addParam("h", Constant.SITE_KEENG_VN);
+		}
 		mModel.request();
 	}
 	

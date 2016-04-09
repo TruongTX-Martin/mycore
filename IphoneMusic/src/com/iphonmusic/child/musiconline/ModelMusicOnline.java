@@ -1,8 +1,8 @@
-package com.iphonmusic.child.mp3zing;
+package com.iphonmusic.child.musiconline;
 
 import com.iphonmusic.base.model.BaseModel;
 
-public class ModelZingMp3 extends BaseModel{
+public class ModelMusicOnline extends BaseModel{
 
 	
 	@Override
