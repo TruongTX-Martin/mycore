@@ -70,7 +70,8 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 				EntityZingMp3 entity = (EntityZingMp3) parent
 						.getItemAtPosition(position);
 				FragmentMusicOnlineDetail detail = FragmentMusicOnlineDetail
-						.newInstance(entity, mZingMp3);
+						.newInstance();
+				BaseManager.getIntance().setCurrentOnline(entity);
 				BaseManager.getIntance().replaceFragment(detail);
 			}
 		});
@@ -94,6 +95,7 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 			mTextMessage.setVisibility(View.GONE);
 			AdapterZingMp3 adapter = new AdapterZingMp3(mContext, mZingMp3);
 			mListView.setAdapter(adapter);
+			BaseManager.getIntance().setListEntityOnline(mZingMp3);
 		} else {
 			mListView.setVisibility(View.GONE);
 			mTextMessage.setVisibility(View.VISIBLE);

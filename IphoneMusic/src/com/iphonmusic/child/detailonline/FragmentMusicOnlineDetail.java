@@ -1,6 +1,5 @@
 package com.iphonmusic.child.detailonline;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Rconfig;
-import com.iphonmusic.entity.EntityZingMp3;
 import com.iphonmusic.style.floatingbutton.FloatingActionButton;
 import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
 
@@ -25,40 +23,28 @@ public class FragmentMusicOnlineDetail extends BaseFragment {
 	protected FloatingActionButton more_share;
 	protected ArrayList<FloatingActionButton> mListButton;
 
-	private static EntityZingMp3 mCurrentEntity;
-	private static ArrayList<EntityZingMp3> mEntitys;
 
-	public static FragmentMusicOnlineDetail newInstance(
-			EntityZingMp3 entityZingMp3, ArrayList<EntityZingMp3> array) {
+	public static FragmentMusicOnlineDetail newInstance() {
 		FragmentMusicOnlineDetail fragmentDetailPlay = new FragmentMusicOnlineDetail();
-		mCurrentEntity = entityZingMp3;
-		mEntitys = array;
 		return fragmentDetailPlay;
 	}
 
-	public void setCurrentEntity(EntityZingMp3 mCurrentEntity) {
-		this.mCurrentEntity = mCurrentEntity;
-	}
-
-	public void setEntitys(ArrayList<EntityZingMp3> mEntitys) {
-		this.mEntitys = mEntitys;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mContext = getActivity();
 		rootView = inflater.inflate(
-				Rconfig.getInstance().layout("layout_fragment_detailplay"),
+				Rconfig.getInstance().layout("layout_fragment_detailplay_online"),
 				container, false);
 		BlockMusicOnlineDetail blockDetailPlay = new BlockMusicOnlineDetail(
 				rootView);
 
 		ControllerMusicOnlineDetail controller = new ControllerMusicOnlineDetail();
-		controller.setCurrentEntity(mCurrentEntity);
-		controller.setEntitys(mEntitys);
+		BaseManager.getIntance().setControllerMusicOnlineDetail(controller);
 		controller.setDelegate(blockDetailPlay);
 		controller.initListener();
+		
 
 		blockDetailPlay.setOnPlayListener(controller.getOnPlayListener());
 		blockDetailPlay.setOnNextListener(controller.getOnNextListener());
@@ -94,6 +80,7 @@ public class FragmentMusicOnlineDetail extends BaseFragment {
 	public void onDestroy() {
 		super.onDestroy();
 		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
+		BaseManager.getIntance().pauseMusic();
 	}
 
 }

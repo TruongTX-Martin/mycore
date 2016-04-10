@@ -15,12 +15,15 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.iphonmusic.R;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.config.Utilities;
 import com.iphonmusic.entity.EntitySong;
+import com.iphonmusic.entity.EntityZingMp3;
 import com.iphonmusic.style.floatingbutton.FloatingActionButton;
 import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
 
@@ -36,6 +39,7 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 	private TextView txt_start;
 	private TextView txt_end;
 	private SeekBar seekBar;
+	private ImageView img_detail;
 
 	private Handler mHandler = new Handler();;
 	private Utilities utilities = new Utilities();
@@ -44,8 +48,6 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 	private Context mContext;
 
 	protected FloatingActionButton btn_share;
-	protected FloatingActionButton btn_to_wishlist;
-	protected FloatingActionButton btn_to_playlist;
 	protected FloatingActionButton btn_repeat;
 	protected ArrayList<FloatingActionButton> mListButton;
 
@@ -82,8 +84,9 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 				.id("img_previous"));
 		seekBar = (SeekBar) rootView.findViewById(Rconfig.getInstance().id(
 				"seekbar"));
+		img_detail = (ImageView) rootView.findViewById(Rconfig.getInstance()
+				.id("img_view"));
 		initFloatButton();
-		updateView();
 		BaseManager.getIntance().getPlayer().setOnCompletionListener(this);
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setProgress(0);
@@ -99,17 +102,6 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 		mMultipleActions.createButton(mContext, Color.parseColor("#3498DB"),
 				Color.parseColor("#3498DB"), Color.parseColor("#FFFFFF"));
 		mListButton = new ArrayList<FloatingActionButton>();
-		// btn to playlist
-		btn_to_playlist = new FloatingActionButton(mContext);
-		btn_to_playlist.setColorNormal(Color.parseColor("#FFFFFF"));
-		btn_to_playlist.setColorPressed(Color.parseColor("#f4f4f4"));
-		btn_to_playlist.setIcon(Rconfig.getInstance().drawable("ic_add"));
-		mListButton.add(btn_to_playlist);
-		// btn to wishlist
-		btn_to_wishlist = new FloatingActionButton(mContext);
-		btn_to_wishlist.setColorNormal(Color.parseColor("#FFFFFF"));
-		btn_to_wishlist.setColorPressed(Color.parseColor("#f4f4f4"));
-		mListButton.add(btn_to_wishlist);
 		// btn share
 		btn_share = new FloatingActionButton(mContext);
 		btn_share.setColorNormal(Color.parseColor("#FFFFFF"));
@@ -153,49 +145,19 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 				}
 			}
 		});
-		btn_to_wishlist.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (EntitySong.checkExitsSong(BaseManager.getIntance()
-						.getCurrentSong())) {
-					btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
-							"ic_wishlist_add"));
-					EntitySong.deleteItemWishList(BaseManager.getIntance()
-							.getCurrentSong());
-				} else {
-					btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
-							"ic_wishlist_added"));
-					EntitySong.addItemWishList(BaseManager.getIntance()
-							.getCurrentSong());
-				}
-			}
-		});
 	}
 
 	@Override
-	public void updateView() {
-		txt_name.setText(BaseManager.getIntance().getCurrentSong()
-				.getSong_name());
-		if (Config.getInstance().getIsPlay()) {
+	public void updateView(EntityZingMp3 zingMp3,boolean isPlay) {
+		txt_name.setText(zingMp3.getzTitle() + " - " + zingMp3.getzArtist());
+		if(isPlay){
 			img_play.setImageResource(Rconfig.getInstance().drawable("ic_play"));
-		} else {
-			img_play.setImageResource(Rconfig.getInstance()
-					.drawable("ic_pause"));
+		}else{
+			img_play.setImageResource(Rconfig.getInstance().drawable("ic_pause"));
 		}
-		try {
-			int total = BaseManager.getIntance().getPlayer().getDuration();
-			txt_end.setText(utilities.milliSecondsToTimer(total));
-		} catch (Exception e) {
-		}
-		if (EntitySong
-				.checkExitsSong(BaseManager.getIntance().getCurrentSong())) {
-			btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
-					"ic_wishlist_added"));
-		} else {
-			btn_to_wishlist.setIcon(Rconfig.getInstance().drawable(
-					"ic_wishlist_add"));
-		}
+		Glide.with(mContext).load(zingMp3.getzAvatar()).centerCrop()
+		.placeholder(R.drawable.ic_detail)
+		.into(img_detail);
 	}
 
 	@Override
@@ -269,7 +231,6 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 			BaseManager.getIntance().playMusic();
 		} else {
 			BaseManager.getIntance().nextSong();
-			updateView();
 		}
 	}
 

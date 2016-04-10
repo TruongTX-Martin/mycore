@@ -1,30 +1,17 @@
 package com.iphonmusic.child.detailonline;
 
-import java.util.ArrayList;
-
-import com.iphonmusic.config.Config;
-import com.iphonmusic.entity.EntityZingMp3;
-
-import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Config;
+import com.iphonmusic.entity.EntityZingMp3;
 
 public class ControllerMusicOnlineDetail {
 	private DelegateMusicOnlineDetail delegate;
 
 	private OnClickListener onPlayListener, onNextListener, onPreviousListener;
-	private EntityZingMp3 mCurrentEntity;
-	private ArrayList<EntityZingMp3> mEntitys;
-	private MediaPlayer mPlayer;
 
-	public void setCurrentEntity(EntityZingMp3 mCurrentEntity) {
-		this.mCurrentEntity = mCurrentEntity;
-	}
-
-	public void setEntitys(ArrayList<EntityZingMp3> mEntitys) {
-		this.mEntitys = mEntitys;
-	}
 
 	public OnClickListener getOnPlayListener() {
 		return onPlayListener;
@@ -43,61 +30,40 @@ public class ControllerMusicOnlineDetail {
 	}
 
 	public ControllerMusicOnlineDetail() {
-		mPlayer = new MediaPlayer();
+		// mPlayer = new MediaPlayer();
 	}
 
 	public void initListener() {
+		BaseManager.getIntance().playMusicOnline();
 		onPlayListener = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				playMusic();
+				if (Config.getInstance().getPlayOnline()) {
+					BaseManager.getIntance().pauseMusicOnline();
+				} else {
+					BaseManager.getIntance().continueMusicOnline();
+				}
 			}
 		};
 		onNextListener = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				BaseManager.getIntance().nextSongOnline();
+
 			}
 		};
 		onPreviousListener = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				BaseManager.getIntance().previousSongOnline();
 			}
 		};
 	}
-
-	public void playMusic() {
-		if (mPlayer != null) {
-			try {
-				mPlayer.reset();
-				mPlayer.setDataSource(mCurrentEntity.getzUrlDownload());
-				mPlayer.prepare();
-				mPlayer.start();
-			} catch (Exception e) {
-				Log.e("Exception Play Music:", e.getMessage());
-			}
-		}
+	public void updateView(boolean isPlay,EntityZingMp3 zingMp3){
+		delegate.updateView(zingMp3, isPlay);
 	}
 
-	public void pauseMusic() {
-		if (mPlayer != null && mPlayer.isPlaying()) {
-			mPlayer.pause();
-		}
-	}
-
-	public void continuteMusic() {
-		if (mPlayer != null && !mPlayer.isPlaying()) {
-			mPlayer.start();
-		}
-	}
-
-	public void nextMusic() {
-
-	}
-
-	public void previousMusic() {
-
-	}
 }
