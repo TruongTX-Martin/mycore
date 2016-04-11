@@ -9,4 +9,6 @@ public interface DelegateMusicOnlineDetail {
 	public void updateView(EntityZingMp3 mp3,boolean isPlay);
 
 	public ImageView getImageViewPlay();
+	
+	public void updateTime();
 }

@@ -162,6 +162,7 @@ public class BaseManager {
 				mPlayerOnline.start();
 				mControllerMusicOnlineDetail.updateView(true, mCurrentOnline);
 				Config.getInstance().setPlayOnline(true);
+				mControllerMusicOnlineDetail.updateTime();
 			} catch (Exception e) {
 				Log.e("Exception Play Music:", e.getMessage());
 			}

@@ -1,9 +1,9 @@
 package com.iphonmusic.child.detailonline;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -19,10 +19,8 @@ import com.bumptech.glide.Glide;
 import com.iphonmusic.R;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Config;
-import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.config.Utilities;
-import com.iphonmusic.entity.EntitySong;
 import com.iphonmusic.entity.EntityZingMp3;
 import com.iphonmusic.style.floatingbutton.FloatingActionButton;
 import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
@@ -87,13 +85,14 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 		img_detail = (ImageView) rootView.findViewById(Rconfig.getInstance()
 				.id("img_view"));
 		initFloatButton();
-		BaseManager.getIntance().getPlayer().setOnCompletionListener(this);
+		BaseManager.getIntance().getPlayerOnline()
+				.setOnCompletionListener(this);
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setProgress(0);
 		seekBar.setMax(100);
 
 		// Updating progress bar
-		updateProgressBar();
+
 	}
 
 	private void initFloatButton() {
@@ -127,7 +126,17 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 
 			@Override
 			public void onClick(View v) {
-
+				Intent sharingIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+						BaseManager.getIntance().getCurrentOnline()
+								.getzLyricUrl());
+				BaseManager
+						.getIntance()
+						.getCurrentActivity()
+						.startActivity(
+								Intent.createChooser(sharingIntent, "Share Via"));
 			}
 		});
 		btn_repeat.setOnClickListener(new OnClickListener() {
@@ -148,16 +157,16 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 	}
 
 	@Override
-	public void updateView(EntityZingMp3 zingMp3,boolean isPlay) {
+	public void updateView(EntityZingMp3 zingMp3, boolean isPlay) {
 		txt_name.setText(zingMp3.getzTitle() + " - " + zingMp3.getzArtist());
-		if(isPlay){
+		if (isPlay) {
 			img_play.setImageResource(Rconfig.getInstance().drawable("ic_play"));
-		}else{
-			img_play.setImageResource(Rconfig.getInstance().drawable("ic_pause"));
+		} else {
+			img_play.setImageResource(Rconfig.getInstance()
+					.drawable("ic_pause"));
 		}
 		Glide.with(mContext).load(zingMp3.getzAvatar()).centerCrop()
-		.placeholder(R.drawable.ic_detail)
-		.into(img_detail);
+				.placeholder(R.drawable.ic_detail).into(img_detail);
 	}
 
 	@Override
@@ -179,12 +188,13 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		mHandler.removeCallbacks(mUpdateTimeTask);
-		int totalDuration = BaseManager.getIntance().getPlayer().getDuration();
+		int totalDuration = BaseManager.getIntance().getPlayerOnline()
+				.getDuration();
 		int currentPosition = utilities.progressToTimer(seekBar.getProgress(),
 				totalDuration);
 
 		// forward or backward to certain seconds
-		BaseManager.getIntance().getPlayer().seekTo(currentPosition);
+		BaseManager.getIntance().getPlayerOnline().seekTo(currentPosition);
 
 		// update timer progress again
 		updateProgressBar();
@@ -192,9 +202,9 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-			long totalDuration = BaseManager.getIntance().getPlayer()
+			long totalDuration = BaseManager.getIntance().getPlayerOnline()
 					.getDuration();
-			long currentDuration = BaseManager.getIntance().getPlayer()
+			long currentDuration = BaseManager.getIntance().getPlayerOnline()
 					.getCurrentPosition();
 
 			// Displaying Total Duration time
@@ -220,17 +230,17 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
-		if (Config.getInstance().getIsRepeat()) {
-			BaseManager.getIntance().playMusic();
-		} else if (Config.getInstance().getShuffle()) {
-			Random rand = new Random();
-			int currentSongIndex = rand.nextInt((Instance.LISTSONG_FOR_PLAY
-					.size() - 1) - 0 + 1) + 0;
-			BaseManager.getIntance().setCurrentSong(
-					Instance.LISTSONG_FOR_PLAY.get(currentSongIndex));
-			BaseManager.getIntance().playMusic();
-		} else {
-			BaseManager.getIntance().nextSong();
+		BaseManager.getIntance().nextSongOnline();
+	}
+
+	@Override
+	public void updateTime() {
+		try {
+			int total = BaseManager.getIntance().getPlayerOnline()
+					.getDuration();
+			txt_end.setText(utilities.milliSecondsToTimer(total));
+			updateProgressBar();
+		} catch (Exception e) {
 		}
 	}
 

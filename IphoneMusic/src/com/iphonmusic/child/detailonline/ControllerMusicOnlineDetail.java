@@ -65,5 +65,8 @@ public class ControllerMusicOnlineDetail {
 	public void updateView(boolean isPlay,EntityZingMp3 zingMp3){
 		delegate.updateView(zingMp3, isPlay);
 	}
+	public void updateTime(){
+		delegate.updateTime();
+	}
 
 }
