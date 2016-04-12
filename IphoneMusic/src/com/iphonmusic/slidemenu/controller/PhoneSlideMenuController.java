@@ -82,6 +82,7 @@ public class PhoneSlideMenuController extends BaseController {
 		addHome();
 		addZingMP3();
 		addNhacCuaTui();
+		addChiaSeNhac();
 	}
 
 	private void addHome() {
@@ -125,6 +126,19 @@ public class PhoneSlideMenuController extends BaseController {
 			mItems.add(item);
 		}
 	}
+	private void addChiaSeNhac() {
+		int index = checkElement(Constant.ITEM_CHIASENHAC);
+		if (index == -1) {
+			ItemNavigation item = new ItemNavigation();
+			item.setName(Constant.ITEM_CHIASENHAC);
+			int id_icon = Rconfig.getInstance().drawable("ic_chiasenhac");
+			Drawable icon = mContext.getResources().getDrawable(id_icon);
+			// icon.setColorFilter(Color.parseColor("#ffffff"),
+			// PorterDuff.Mode.SRC_ATOP);
+			item.setDrawble(icon);
+			mItems.add(item);
+		}
+	}
 
 
 	public void onNaviagte(int position) {
@@ -160,6 +174,9 @@ public class PhoneSlideMenuController extends BaseController {
 			break;
 		case Constant.ITEM_NHACUATUI:
 			fragment = FragmentMusicOnline.newInstance(Constant.ITEM_NHACUATUI);
+			break;
+		case Constant.ITEM_CHIASENHAC:
+			fragment = FragmentMusicOnline.newInstance(Constant.ITEM_CHIASENHAC);
 			break;
 		default:
 			break;

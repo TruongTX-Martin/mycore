@@ -98,8 +98,8 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 	private void initFloatButton() {
 		mMultipleActions = (FloatingActionsMenu) rootView.findViewById(Rconfig
 				.getInstance().id("more_plugins_action"));
-		mMultipleActions.createButton(mContext, Color.parseColor("#3498DB"),
-				Color.parseColor("#3498DB"), Color.parseColor("#FFFFFF"));
+		mMultipleActions.createButton(mContext, Color.parseColor("#ffffff"),
+				Color.parseColor("#ffffff"), Color.parseColor("#000000"));
 		mListButton = new ArrayList<FloatingActionButton>();
 		// btn share
 		btn_share = new FloatingActionButton(mContext);
@@ -111,7 +111,7 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 		btn_repeat = new FloatingActionButton(mContext);
 		btn_repeat.setColorNormal(Color.parseColor("#FFFFFF"));
 		btn_repeat.setColorPressed(Color.parseColor("#f4f4f4"));
-		if (Config.getInstance().getIsRepeat()) {
+		if (Config.getInstance().getIsRepeatOnline()) {
 			btn_repeat.setIcon(Rconfig.getInstance().drawable("ic_repeated"));
 		} else {
 			btn_repeat.setIcon(Rconfig.getInstance().drawable("ic_repeat"));
@@ -143,14 +143,14 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 
 			@Override
 			public void onClick(View v) {
-				if (Config.getInstance().getIsRepeat()) {
+				if (Config.getInstance().getIsRepeatOnline()) {
 					btn_repeat.setIcon(Rconfig.getInstance().drawable(
 							"ic_repeat"));
-					Config.getInstance().setRepeat(false);
+					Config.getInstance().setRepeatOnline(false);
 				} else {
 					btn_repeat.setIcon(Rconfig.getInstance().drawable(
 							"ic_repeated"));
-					Config.getInstance().setRepeat(true);
+					Config.getInstance().setRepeatOnline(true);
 				}
 			}
 		});
@@ -230,7 +230,11 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
-		BaseManager.getIntance().nextSongOnline();
+		if (Config.getInstance().getIsRepeatOnline()) {
+			BaseManager.getIntance().playMusicOnline();
+		} else {
+			BaseManager.getIntance().nextSongOnline();
+		}
 	}
 
 	@Override

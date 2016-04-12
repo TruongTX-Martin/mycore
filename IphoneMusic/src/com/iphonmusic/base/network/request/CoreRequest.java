@@ -5,7 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.widget.Toast;
+
 import com.iphonmusic.base.delegate.NetworkDelegate;
+import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.base.network.response.CoreResponse;
 import com.iphonmusic.base.network.volley.AppController;
 import com.iphonmusic.base.network.volley.Request.Method;
@@ -37,7 +40,10 @@ public class CoreRequest {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						System.out.println("error");
+						Toast.makeText(
+								BaseManager.getIntance().getCurrentContext(),
+								"Please check internet connection?",
+								Toast.LENGTH_SHORT).show();
 					}
 				});
 		request.setShouldCache(false);
@@ -45,7 +51,7 @@ public class CoreRequest {
 	}
 
 	private String getUrlFromParam(HashMap<String, Object> hashMap) {
-		String url = Constant.BASE_URL+ "?code=[" + Constant.KEYCODE+"]";
+		String url = Constant.BASE_URL + "?code=[" + Constant.KEYCODE + "]";
 		if (!hashMap.isEmpty()) {
 			Iterator<Entry<String, Object>> iterator = hashMap.entrySet()
 					.iterator();
@@ -53,7 +59,7 @@ public class CoreRequest {
 				Map.Entry entry = (Map.Entry) iterator.next();
 				String key = String.valueOf(entry.getKey());
 				String value = entry.getValue().toString();
-				url += "&"+ key + "="+value;
+				url += "&" + key + "=" + value;
 			}
 		}
 		return url;

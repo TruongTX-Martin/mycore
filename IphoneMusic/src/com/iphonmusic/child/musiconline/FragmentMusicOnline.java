@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 
 public class FragmentMusicOnline extends BaseFragment {
@@ -36,7 +37,7 @@ public class FragmentMusicOnline extends BaseFragment {
 		ControllerMusicOnline mController = new ControllerMusicOnline();
 		mController.setDelegate(block);
 		mController.setSiteName(mSiteName);
-		mController.request("nhac hot");
+		mController.request(Instance.SEARCH);
 		
 		block.setOnKeyEdittext(mController.getOnKeyListenerEditText());
 		

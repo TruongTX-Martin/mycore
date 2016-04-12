@@ -79,7 +79,6 @@ public class FragmentMusicOnlineDetail extends BaseFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 		BaseManager.getIntance().pauseMusic();
 	}
 

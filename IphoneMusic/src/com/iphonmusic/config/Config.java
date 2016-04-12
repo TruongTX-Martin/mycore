@@ -18,6 +18,7 @@ public class Config {
 	private boolean isRepeat ;
 	private boolean isShuffle;
 	private boolean isPlayOnline;
+	private boolean isRepeatOnline;
 	
 	private String url_mp3zing = "http://mp3.zing.vn/";
 
@@ -29,6 +30,12 @@ public class Config {
 		return instance;
 	}
 	
+	public void setRepeatOnline(boolean input){
+		this.isRepeatOnline = input;
+	}
+	public boolean getIsRepeatOnline(){
+		return isRepeatOnline;
+	}
 	public void setPlayOnline(boolean play){
 		this.isPlayOnline = play;
 	}

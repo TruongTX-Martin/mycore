@@ -10,6 +10,7 @@ import com.iphonmusic.adapter.AdapterZingMp3;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.child.detailonline.FragmentMusicOnlineDetail;
 import com.iphonmusic.config.Constant;
+import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntityZingMp3;
 
@@ -59,6 +60,7 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 				.id("txt_message"));
 		mEdtSearch = (EditText) mRootView.findViewById(Rconfig.getInstance()
 				.id("edt_search"));
+		mEdtSearch.setText(Instance.SEARCH);
 		progressBar = (ProgressBar) mRootView.findViewById(Rconfig
 				.getInstance().id("progressbar"));
 		updateView();
@@ -83,8 +85,8 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 		if (mSiteName.equals(Constant.ITEM_NHACUATUI)) {
 			img_banner.setImageResource(R.drawable.ic_banner_nhaccuattui);
 		}
-		if (mSiteName.equals(Constant.ITEM_KEENG)) {
-			img_banner.setImageResource(R.drawable.ic_banner_keengs);
+		if (mSiteName.equals(Constant.ITEM_CHIASENHAC)) {
+			img_banner.setImageResource(R.drawable.ic_banner_chiasenhac);
 		}
 
 	}

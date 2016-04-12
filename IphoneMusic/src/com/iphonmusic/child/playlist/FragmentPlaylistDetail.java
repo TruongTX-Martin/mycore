@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.iphonmusic.adapter.AdapterSongs;
 import com.iphonmusic.base.fragment.BaseFragment;
@@ -23,7 +23,6 @@ import com.iphonmusic.child.songs.FragmentSongsChoise;
 import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
-import com.iphonmusic.entity.EntityPlaylist;
 import com.iphonmusic.entity.EntitySong;
 
 public class FragmentPlaylistDetail extends BaseFragment {
@@ -81,15 +80,11 @@ public class FragmentPlaylistDetail extends BaseFragment {
 		if (mEntitySongs.size() > 0) {
 			listview.setVisibility(View.VISIBLE);
 			txt_message.setVisibility(View.GONE);
-			BaseManager.getIntance().getControllerBottom()
-					.visibleRootView(true);
 			mAdapter = new AdapterSongs(mContext, mEntitySongs);
 			listview.setAdapter(mAdapter);
 		} else {
 			listview.setVisibility(View.GONE);
 			txt_message.setVisibility(View.VISIBLE);
-			BaseManager.getIntance().getControllerBottom()
-					.visibleRootView(false);
 		}
 	}
 
@@ -144,7 +139,6 @@ public class FragmentPlaylistDetail extends BaseFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 	}
 
 }

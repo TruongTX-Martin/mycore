@@ -163,6 +163,7 @@ public class BaseManager {
 				mControllerMusicOnlineDetail.updateView(true, mCurrentOnline);
 				Config.getInstance().setPlayOnline(true);
 				mControllerMusicOnlineDetail.updateTime();
+				pauseMusic();
 			} catch (Exception e) {
 				Log.e("Exception Play Music:", e.getMessage());
 			}
@@ -174,6 +175,7 @@ public class BaseManager {
 			mPlayerOnline.start();
 			mControllerMusicOnlineDetail.updateView(true, mCurrentOnline);
 			Config.getInstance().setPlayOnline(true);
+			pauseMusic();
 		}
 	}
 
@@ -219,6 +221,7 @@ public class BaseManager {
 				mControllerBottom.updateImagePlay(true);
 				Config.getInstance().setPlay(true);
 				mControllerBottom.setIsFirstPlay(false);
+				pauseMusicOnline();
 			} catch (Exception e) {
 				Log.e("Exception Play Music:", e.getMessage());
 			}
@@ -230,6 +233,7 @@ public class BaseManager {
 			mPlayer.start();
 			mControllerBottom.updateImagePlay(true);
 			Config.getInstance().setPlay(true);
+			pauseMusicOnline();
 		}
 	}
 
@@ -318,6 +322,8 @@ public class BaseManager {
 						.getId("out_to_left", "anim"), Rconfig.getInstance()
 						.getId("in_from_left", "anim"), Rconfig.getInstance()
 						.getId("out_to_right", "anim"));
+			}else{
+				mControllerBottom.visibleRootView(false);
 			}
 			fragmentTransaction.replace(Rconfig.getInstance().id("container"),
 					fragment);

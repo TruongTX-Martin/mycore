@@ -76,13 +76,11 @@ public class FragmentDetailPlay extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(false);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 	}
 
 }

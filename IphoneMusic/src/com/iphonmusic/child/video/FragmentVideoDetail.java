@@ -65,7 +65,6 @@ public class FragmentVideoDetail extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(false);
 	}
 
 	@Override
@@ -74,7 +73,6 @@ public class FragmentVideoDetail extends BaseFragment {
 		if (mVideoView != null && mVideoView.isPlaying()) {
 			mVideoView.stopPlayback();
 		}
-		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 	}
 
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.iphonmusic.adapter.TabAdapterFragment;
 import com.iphonmusic.base.fragment.BaseFragment;
+import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Rconfig;

@@ -8,6 +8,7 @@ import com.iphonmusic.base.delegate.ModelDelegate;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.base.network.response.CoreResponse;
 import com.iphonmusic.config.Constant;
+import com.iphonmusic.config.Instance;
 
 public class ControllerMusicOnline {
 
@@ -52,6 +53,7 @@ public class ControllerMusicOnline {
 	}
 
 	public void request(String query) {
+		Instance.SEARCH = query;
 		mDelegate.updateProgressBar(true);
 		ModelMusicOnline  mModel = new ModelMusicOnline();
 		mModel.setModelDelegate(new ModelDelegate() {
@@ -75,8 +77,8 @@ public class ControllerMusicOnline {
 		if(mSiteName.equals(Constant.ITEM_NHACUATUI)){
 			mModel.addParam("h", Constant.SITE_NHAC_CUA_TUI);
 		}
-		if(mSiteName.equals(Constant.ITEM_KEENG)){
-			mModel.addParam("h", Constant.SITE_KEENG_VN);
+		if(mSiteName.equals(Constant.ITEM_CHIASENHAC)){
+			mModel.addParam("h", Constant.SITE_CHIA_SE_NHAC);
 		}
 		mModel.request();
 	}

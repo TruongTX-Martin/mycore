@@ -71,7 +71,6 @@ public class FragmentFeedBack extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(false);
 		BaseManager.getIntance().getSlideMenuController().closeSlideMenu();
 	}
 
@@ -79,7 +78,6 @@ public class FragmentFeedBack extends BaseFragment {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 	}
 
 	@SuppressLint("NewApi")

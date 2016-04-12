@@ -97,8 +97,8 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 	private void initFloatButton() {
 		mMultipleActions = (FloatingActionsMenu) rootView.findViewById(Rconfig
 				.getInstance().id("more_plugins_action"));
-		mMultipleActions.createButton(mContext, Color.parseColor("#3498DB"),
-				Color.parseColor("#3498DB"), Color.parseColor("#000000"));
+		mMultipleActions.createButton(mContext, Color.parseColor("#ffffff"),
+				Color.parseColor("#ffffff"), Color.parseColor("#000000"));
 		mListButton = new ArrayList<FloatingActionButton>();
 		// btn to playlist
 		btn_to_playlist = new FloatingActionButton(mContext);
