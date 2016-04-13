@@ -38,6 +38,7 @@ public class FragmentMusicOnline extends BaseFragment {
 		mController.setDelegate(block);
 		mController.setSiteName(mSiteName);
 		mController.request(Instance.SEARCH);
+		BaseManager.getIntance().setControllerMusicOnline(mController);
 		
 		block.setOnKeyEdittext(mController.getOnKeyListenerEditText());
 		
@@ -52,7 +53,6 @@ public class FragmentMusicOnline extends BaseFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 	}
 
 }

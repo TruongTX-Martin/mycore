@@ -57,6 +57,7 @@ public class FragmentVideoDetail extends BaseFragment {
 			mVideoView.setMediaController(mediaController);
 			mVideoView.setVideoPath(video.getVideo_url());
 			mVideoView.start();
+			BaseManager.getIntance().pauseMusic();
 		}
 		return rootView;
 	}
@@ -65,11 +66,13 @@ public class FragmentVideoDetail extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		BaseManager.getIntance().getControllerBottom().visibleRootView(false);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
 		if (mVideoView != null && mVideoView.isPlaying()) {
 			mVideoView.stopPlayback();
 		}

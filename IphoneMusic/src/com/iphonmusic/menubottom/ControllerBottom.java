@@ -83,10 +83,10 @@ public class ControllerBottom {
 				BaseManager.getIntance().replaceFragment(detailPlay);
 			}
 		};
-		if (Instance.LISTSONG.size() > 0) {
-			EntitySong entitySong = Instance.LISTSONG.get(0);
-			updateView(entitySong);
-		}
+//		if (Instance.LISTSONG.size() > 0) {
+//			EntitySong entitySong = Instance.LISTSONG.get(0);
+//			updateView(entitySong);
+//		}
 	}
 	
 	public void updateImagePlay(boolean status){

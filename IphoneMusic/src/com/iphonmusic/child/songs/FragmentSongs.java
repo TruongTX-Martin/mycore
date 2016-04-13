@@ -56,30 +56,29 @@ public class FragmentSongs extends BaseFragment {
 				"listview"));
 		edt_search = (EditText) rootView.findViewById(Rconfig.getInstance().id(
 				"edt_search"));
-		img_shuffle = (ImageView) rootView.findViewById(Rconfig.getInstance().id(
-				"img_shuffle"));
-		layout_shuffle = (LinearLayout) rootView.findViewById(Rconfig.getInstance().id(
-				"ll_shuffle"));
+		img_shuffle = (ImageView) rootView.findViewById(Rconfig.getInstance()
+				.id("img_shuffle"));
+		layout_shuffle = (LinearLayout) rootView.findViewById(Rconfig
+				.getInstance().id("ll_shuffle"));
 		refesh();
-		if (Instance.LISTSONG.size() == 0) {
-			getListSongs(new File(MEDIA_PATH));
+		// if (Instance.LISTSONG.size() == 0) {
+		// getListSongs(new File(MEDIA_PATH));
+		// } else {
+		if (mAdapter == null) {
+			mAdapter = new AdapterSongs(mContext, Instance.LISTSONG);
+			mListView.setAdapter(mAdapter);
 		} else {
-			if (mAdapter == null) {
-				mAdapter = new AdapterSongs(mContext, Instance.LISTSONG);
-				mListView.setAdapter(mAdapter);
-				BaseManager.getIntance().getControllerBottom()
-						.updateView(Instance.LISTSONG.get(0));
-			}
+			mListView.setAdapter(mAdapter);
 		}
+		// }
 		handleEvent();
-		BaseManager.getIntance().updateBottom();
 		return rootView;
 	}
-	
-	private void refesh(){
-		if(Config.getInstance().getShuffle()){
+
+	private void refesh() {
+		if (Config.getInstance().getShuffle()) {
 			img_shuffle.setColorFilter(Color.BLACK);
-		}else{
+		} else {
 			img_shuffle.setColorFilter(Color.GRAY);
 		}
 	}
@@ -118,17 +117,17 @@ public class FragmentSongs extends BaseFragment {
 			}
 		});
 		layout_shuffle.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				if(Config.getInstance().getShuffle()){
+				if (Config.getInstance().getShuffle()) {
 					img_shuffle.setColorFilter(Color.GRAY);
 					Config.getInstance().setShuffle(false);
-				}else{
+				} else {
 					img_shuffle.setColorFilter(Color.BLACK);
 					Config.getInstance().setShuffle(true);
 				}
-				
+
 			}
 		});
 	}
@@ -184,6 +183,5 @@ public class FragmentSongs extends BaseFragment {
 			mListView.setAdapter(mAdapter);
 		}
 		refesh();
-		BaseManager.getIntance().updateBottom();
 	}
 }

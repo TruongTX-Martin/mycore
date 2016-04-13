@@ -78,7 +78,6 @@ public class FragmentPlaylist extends BaseFragment {
 				BaseManager.getIntance().replaceFragment(detail);
 			}
 		});
-		BaseManager.getIntance().updateBottom();
 		return rootView;
 	}
 
@@ -133,7 +132,6 @@ public class FragmentPlaylist extends BaseFragment {
 			mAdapter = new AdapterPlayList(mContext, mPlayList);
 		}
 		listview.setAdapter(mAdapter);
-		BaseManager.getIntance().updateBottom();
 	}
 	
 	

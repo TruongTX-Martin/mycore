@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntitySong;
 
@@ -43,8 +44,18 @@ public class BlockBottom implements DelegateBottom {
 				.id("txt_song_name"));
 		txt_name_singer = (TextView) mRootView.findViewById(Rconfig
 				.getInstance().id("txt_singer"));
-		if (BaseManager.getIntance().getCurrentSong() != null) {
-			updateView(BaseManager.getIntance().getCurrentSong());
+//		if (Instance.LISTSONG.size() == 1) {
+//			BaseManager.getIntance().setCurrentSong(
+//					Instance.LISTSONG.get(0));
+//			BaseManager.getIntance().playMusic();
+//			BaseManager.getIntance().pauseMusic();
+//		}
+//		if (BaseManager.getIntance().getCurrentSong() != null) {
+//			updateView(BaseManager.getIntance().getCurrentSong());
+//		}
+		if(Instance.LISTSONG.size() > 0){
+			updateView(Instance.LISTSONG.get(0));
+			BaseManager.getIntance().setCurrentSong(Instance.LISTSONG.get(0));
 		}
 	}
 

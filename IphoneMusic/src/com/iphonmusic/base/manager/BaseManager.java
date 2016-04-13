@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.child.detailonline.ControllerMusicOnlineDetail;
+import com.iphonmusic.child.musiconline.ControllerMusicOnline;
 import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
@@ -42,12 +43,18 @@ public class BaseManager {
 	private EntityZingMp3 mCurrentOnline;
 	private ArrayList<EntityZingMp3> mListEntityOnline;
 	private ControllerMusicOnlineDetail mControllerMusicOnlineDetail;
+	
+	private ControllerMusicOnline mControllerMusicOnline;
 
 	public static BaseManager getIntance() {
 		if (null == instance) {
 			instance = new BaseManager();
 		}
 		return instance;
+	}
+	public void setControllerMusicOnline(
+			ControllerMusicOnline mControllerMusicOnline) {
+		this.mControllerMusicOnline = mControllerMusicOnline;
 	}
 	
 	public void setControllerMusicOnlineDetail(
@@ -57,6 +64,8 @@ public class BaseManager {
 
 	public void setCurrentOnline(EntityZingMp3 mCurrentOnline) {
 		this.mCurrentOnline = mCurrentOnline;
+		mControllerMusicOnline.updateMusicOnline(mCurrentOnline);
+		
 	}
 
 	public EntityZingMp3 getCurrentOnline() {
@@ -89,7 +98,9 @@ public class BaseManager {
 
 	public void setCurrentSong(EntitySong mCurrentSong) {
 		this.mCurrentSong = mCurrentSong;
+		if(mControllerBottom != null){
 		mControllerBottom.updateView(mCurrentSong);
+		}
 
 	}
 
@@ -323,7 +334,7 @@ public class BaseManager {
 						.getId("in_from_left", "anim"), Rconfig.getInstance()
 						.getId("out_to_right", "anim"));
 			}else{
-				mControllerBottom.visibleRootView(false);
+				mControllerBottom.visibleRootView(true);
 			}
 			fragmentTransaction.replace(Rconfig.getInstance().id("container"),
 					fragment);

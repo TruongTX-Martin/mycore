@@ -9,6 +9,7 @@ import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.base.network.response.CoreResponse;
 import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Instance;
+import com.iphonmusic.entity.EntityZingMp3;
 
 public class ControllerMusicOnline {
 
@@ -87,4 +88,7 @@ public class ControllerMusicOnline {
 		return query.replace(" ", "+");
 	}
 
+	public void updateMusicOnline(EntityZingMp3 zingMp3){
+		mDelegate.updateMusicOnline(zingMp3);
+	}
 }

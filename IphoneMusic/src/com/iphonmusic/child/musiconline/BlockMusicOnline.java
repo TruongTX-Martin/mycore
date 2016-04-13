@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.bumptech.glide.Glide;
 import com.iphonmusic.R;
 import com.iphonmusic.adapter.AdapterZingMp3;
 import com.iphonmusic.base.manager.BaseManager;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class BlockMusicOnline implements DelegateMusicOnline {
@@ -39,6 +41,13 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 	private ArrayList<EntityZingMp3> mZingMp3 = new ArrayList<EntityZingMp3>();
 	private String mSiteName;
 	private ImageView img_banner;
+
+	private RelativeLayout rlt_playmusic;
+	private ImageView img_playmusic;
+	private TextView txt_song;
+	private TextView txt_singer;
+	private ImageView img_play;
+	private ImageView img_next;
 
 	public void setOnKeyEdittext(OnKeyListener listener) {
 		mEdtSearch.setOnKeyListener(listener);
@@ -87,6 +96,22 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 		}
 		if (mSiteName.equals(Constant.ITEM_CHIASENHAC)) {
 			img_banner.setImageResource(R.drawable.ic_banner_chiasenhac);
+		}
+
+		img_playmusic = (ImageView) mRootView.findViewById(Rconfig
+				.getInstance().id("img_icon_bottom"));
+		img_play = (ImageView) mRootView.findViewById(Rconfig.getInstance().id(
+				"img_icon_play"));
+		img_next = (ImageView) mRootView.findViewById(Rconfig.getInstance().id(
+				"img_icon_next"));
+		txt_song = (TextView) mRootView.findViewById(Rconfig.getInstance().id(
+				"txt_song_name"));
+		txt_singer = (TextView) mRootView.findViewById(Rconfig.getInstance()
+				.id("txt_singer"));
+		rlt_playmusic = (RelativeLayout) mRootView.findViewById(Rconfig
+				.getInstance().id("layout_playmusic"));
+		if(BaseManager.getIntance().getCurrentOnline() != null){
+			updateMusicOnline(BaseManager.getIntance().getCurrentOnline());
 		}
 
 	}
@@ -139,6 +164,16 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 		} else {
 			progressBar.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void updateMusicOnline(EntityZingMp3 mp3) {
+		rlt_playmusic.setVisibility(View.VISIBLE);
+		txt_song.setText(mp3.getzTitle());
+		txt_singer.setText(mp3.getzArtist());
+		Glide.with(mContext).load(mp3.getzAvatar()).centerCrop()
+		.placeholder(R.drawable.ic_music_item)
+		.into(img_playmusic);
 	}
 
 }

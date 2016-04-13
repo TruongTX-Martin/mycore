@@ -72,7 +72,6 @@ public class FragmentPlaylistDetail extends BaseFragment {
 		}
 		showview();
 		handleEvent();
-		BaseManager.getIntance().updateBottom();
 		return rootView;
 	}
 
@@ -133,7 +132,6 @@ public class FragmentPlaylistDetail extends BaseFragment {
 			mEntitySongs = EntitySong.getItemSongFromPlaylistId(mIdPlaylist);
 			showview();
 		}
-		BaseManager.getIntance().updateBottom();
 	}
 
 	@Override

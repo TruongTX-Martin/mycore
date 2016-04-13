@@ -73,7 +73,6 @@ public class FragmentMusicOnlineDetail extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		BaseManager.getIntance().getControllerBottom().visibleRootView(false);
 	}
 
 	@Override

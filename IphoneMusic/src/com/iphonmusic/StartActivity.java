@@ -3,6 +3,7 @@ package com.iphonmusic;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.iphonmusic.adapter.AdapterSongs;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
@@ -29,8 +30,6 @@ public class StartActivity extends Activity {
 //		setContentView(R.layout.core_start_activity);
 		setContentView(Rconfig.getInstance().layout("core_start_activity"));
 		new getSongAsynTask().execute("");
-		ArrayList<EntitySong>  arrayList = getListSongs(new File(MEDIA_PATH));
-		
 	}
 	
 
@@ -40,14 +39,12 @@ public class StartActivity extends Activity {
 		@Override
 		protected ArrayList<EntitySong> doInBackground(String... params) {
 			File dir = new File(MEDIA_PATH);
-			ArrayList<EntitySong> listSong = getListSongs(dir);
-			return listSong;
+			getListSongs(new File(MEDIA_PATH));
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(ArrayList<EntitySong> result) {
-			super.onPostExecute(result);
-			Instance.LISTSONG = result;
 			toMainActivity();
 		}
 
@@ -58,9 +55,7 @@ public class StartActivity extends Activity {
 		startActivity(intent);
 	}
 
-	@SuppressLint("NewApi")
-	public ArrayList<EntitySong> getListSongs(File dir) {
-		ArrayList<EntitySong> list = new ArrayList<EntitySong>();
+	public void getListSongs(File dir) {
 		String Pattern = ".mp3";
 		File listFile[] = dir.listFiles();
 		if (listFile != null && listFile.length > 0) {
@@ -80,14 +75,13 @@ public class StartActivity extends Activity {
 										.getSingerName(fullName));
 								song.setSong_url(file.getPath());
 								song.setSong_file(file);
-								list.add(song);
+								Instance.LISTSONG.add(song);
 							}
 						}
 					}
 				}
 			}
 		}
-		return list;
 	}
 
 }

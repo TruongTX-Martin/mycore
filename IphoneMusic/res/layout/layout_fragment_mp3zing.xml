@@ -37,6 +37,88 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/layout_playmusic"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true" >
+
+        <View
+            android:id="@+id/view_playmusic"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:background="#CACACA" />
+
+        <ImageView
+            android:id="@+id/img_icon_bottom"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="2dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_appble" />
+
+        <ImageView
+            android:id="@+id/img_icon_music"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_music" />
+
+        <ImageView
+            android:id="@+id/img_icon_next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/img_icon_music"
+            android:src="@drawable/ic_next" />
+
+        <ImageView
+            android:id="@+id/img_icon_play"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/img_icon_next"
+            android:src="@drawable/ic_pause" />
+
+        <TextView
+            android:id="@+id/txt_song_name"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/img_icon_play"
+            android:layout_toRightOf="@+id/img_icon_bottom"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Ai dau chu ngo anh thich em nhu xua"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_singer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_song_name"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/img_icon_play"
+            android:layout_toRightOf="@+id/img_icon_bottom"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Lâm Chấn Khang "
+            android:textColor="#000000"
+            android:textSize="14dp" />
+    </RelativeLayout>
+    <RelativeLayout
         android:id="@+id/rlt_banner_mp3"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -64,7 +146,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:layout_below="@+id/view" />
+        android:layout_below="@+id/view"
+        android:layout_above="@+id/layout_playmusic" 
+        />
 
     <TextView
         android:id="@+id/txt_message"
