@@ -90,9 +90,6 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setProgress(0);
 		seekBar.setMax(100);
-
-		// Updating progress bar
-
 	}
 
 	private void initFloatButton() {
@@ -167,6 +164,7 @@ public class BlockMusicOnlineDetail implements DelegateMusicOnlineDetail,
 		}
 		Glide.with(mContext).load(zingMp3.getzAvatar()).centerCrop()
 				.placeholder(R.drawable.ic_detail).into(img_detail);
+		updateProgressBar();
 	}
 
 	@Override

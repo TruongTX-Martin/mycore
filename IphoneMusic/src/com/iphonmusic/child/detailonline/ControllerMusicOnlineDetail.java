@@ -8,10 +8,19 @@ import com.iphonmusic.config.Config;
 import com.iphonmusic.entity.EntityZingMp3;
 
 public class ControllerMusicOnlineDetail {
-	private DelegateMusicOnlineDetail delegate;
 
 	private OnClickListener onPlayListener, onNextListener, onPreviousListener;
+	private DelegateMusicOnlineDetail mDelegate;
 
+	private boolean isNewPlay;
+
+	public void setIsNewPlay(boolean input) {
+		this.isNewPlay = input;
+	}
+
+	public void setmDelegate(DelegateMusicOnlineDetail mDelegate) {
+		this.mDelegate = mDelegate;
+	}
 
 	public OnClickListener getOnPlayListener() {
 		return onPlayListener;
@@ -25,16 +34,22 @@ public class ControllerMusicOnlineDetail {
 		return onPreviousListener;
 	}
 
-	public void setDelegate(DelegateMusicOnlineDetail delegate) {
-		this.delegate = delegate;
-	}
-
 	public ControllerMusicOnlineDetail() {
 		// mPlayer = new MediaPlayer();
 	}
 
 	public void initListener() {
-		BaseManager.getIntance().playMusicOnline();
+		if (isNewPlay) {
+			BaseManager.getIntance().playMusicOnline();
+		} else {
+			if (Config.getInstance().getPlayOnline()) {
+				BaseManager.getIntance().continueMusicOnline();
+				mDelegate.updateView(BaseManager.getIntance()
+						.getCurrentOnline(), true);
+			} else {
+				BaseManager.getIntance().playMusicOnline();
+			}
+		}
 		onPlayListener = new OnClickListener() {
 
 			@Override
@@ -61,12 +76,6 @@ public class ControllerMusicOnlineDetail {
 				BaseManager.getIntance().previousSongOnline();
 			}
 		};
-	}
-	public void updateView(boolean isPlay,EntityZingMp3 zingMp3){
-		delegate.updateView(zingMp3, isPlay);
-	}
-	public void updateTime(){
-		delegate.updateTime();
 	}
 
 }

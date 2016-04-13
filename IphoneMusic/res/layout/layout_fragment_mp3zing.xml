@@ -39,7 +39,7 @@
     <RelativeLayout
         android:id="@+id/layout_playmusic"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:visibility="gone"
         android:layout_alignParentBottom="true" >
 
@@ -97,7 +97,7 @@
             android:layout_toLeftOf="@+id/img_icon_play"
             android:layout_toRightOf="@+id/img_icon_bottom"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="Ai dau chu ngo anh thich em nhu xua"
             android:textColor="#000000"
             android:textSize="15dp"
@@ -157,7 +157,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="200dp"
-        android:text="Không tìm thấy bài hát nào"
         android:textColor="#000000"
         android:visibility="gone"
         android:textSize="15dp" />

@@ -10,6 +10,7 @@ import com.iphonmusic.R;
 import com.iphonmusic.adapter.AdapterZingMp3;
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.child.detailonline.FragmentMusicOnlineDetail;
+import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Constant;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
@@ -18,6 +19,7 @@ import com.iphonmusic.entity.EntityZingMp3;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -82,6 +84,7 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 						.getItemAtPosition(position);
 				FragmentMusicOnlineDetail detail = FragmentMusicOnlineDetail
 						.newInstance();
+				detail.setIsNewPlay(true);
 				BaseManager.getIntance().setCurrentOnline(entity);
 				BaseManager.getIntance().replaceFragment(detail);
 			}
@@ -89,13 +92,16 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 		img_banner = (ImageView) mRootView.findViewById(Rconfig.getInstance()
 				.id("img_banner"));
 		if (mSiteName.equals(Constant.ITEM_MP3_ZING)) {
-			img_banner.setImageResource(R.drawable.ic_banner_zingmp3);
-		}
+			Glide.with(mContext).load("").centerCrop()
+			.placeholder(R.drawable.ic_banner_zingmp3).into(img_banner);		}
 		if (mSiteName.equals(Constant.ITEM_NHACUATUI)) {
-			img_banner.setImageResource(R.drawable.ic_banner_nhaccuattui);
+			Glide.with(mContext).load("").centerCrop()
+			.placeholder(R.drawable.ic_banner_nhaccuattui).into(img_banner);
 		}
 		if (mSiteName.equals(Constant.ITEM_CHIASENHAC)) {
 			img_banner.setImageResource(R.drawable.ic_banner_chiasenhac);
+			Glide.with(mContext).load("").centerCrop()
+			.placeholder(R.drawable.ic_banner_chiasenhac).into(img_banner);
 		}
 
 		img_playmusic = (ImageView) mRootView.findViewById(Rconfig
@@ -110,8 +116,43 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 				.id("txt_singer"));
 		rlt_playmusic = (RelativeLayout) mRootView.findViewById(Rconfig
 				.getInstance().id("layout_playmusic"));
-		if(BaseManager.getIntance().getCurrentOnline() != null){
+		if (BaseManager.getIntance().getCurrentOnline() != null) {
 			updateMusicOnline(BaseManager.getIntance().getCurrentOnline());
+		}
+		img_play.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (Config.getInstance().getPlayOnline()) {
+					Config.getInstance().setPlayOnline(false);
+					BaseManager.getIntance().pauseMusicOnline();
+				} else {
+					Config.getInstance().setPlayOnline(true);
+					BaseManager.getIntance().continueMusicOnline();
+				}
+			}
+		});
+		img_next.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				BaseManager.getIntance().nextSongOnline();
+			}
+		});
+		rlt_playmusic.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentMusicOnlineDetail detail = FragmentMusicOnlineDetail
+						.newInstance();
+				BaseManager.getIntance().replaceFragment(detail);
+			}
+		});
+		if (Config.getInstance().getPlayOnline()) {
+			img_play.setImageResource(Rconfig.getInstance().drawable("ic_play"));
+		} else {
+			img_play.setImageResource(Rconfig.getInstance()
+					.drawable("ic_pause"));
 		}
 
 	}
@@ -126,6 +167,7 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 		} else {
 			mListView.setVisibility(View.GONE);
 			mTextMessage.setVisibility(View.VISIBLE);
+			mTextMessage.setText("Không tìm thấy bài hát nào");
 		}
 	}
 
@@ -172,8 +214,13 @@ public class BlockMusicOnline implements DelegateMusicOnline {
 		txt_song.setText(mp3.getzTitle());
 		txt_singer.setText(mp3.getzArtist());
 		Glide.with(mContext).load(mp3.getzAvatar()).centerCrop()
-		.placeholder(R.drawable.ic_music_item)
-		.into(img_playmusic);
+				.placeholder(R.drawable.ic_music_item).into(img_playmusic);
+		if (Config.getInstance().getPlayOnline()) {
+			img_play.setImageResource(Rconfig.getInstance().drawable("ic_play"));
+		} else {
+			img_play.setImageResource(Rconfig.getInstance()
+					.drawable("ic_pause"));
+		}
 	}
 
 }

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.provider.ContactsContract.DeletedContacts;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,7 +17,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.child.detailonline.ControllerMusicOnlineDetail;
+import com.iphonmusic.child.detailonline.DelegateMusicOnlineDetail;
 import com.iphonmusic.child.musiconline.ControllerMusicOnline;
+import com.iphonmusic.child.musiconline.DelegateMusicOnline;
 import com.iphonmusic.config.Config;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
@@ -42,9 +45,9 @@ public class BaseManager {
 	private DatabaseHandler databaseHandler;
 	private EntityZingMp3 mCurrentOnline;
 	private ArrayList<EntityZingMp3> mListEntityOnline;
-	private ControllerMusicOnlineDetail mControllerMusicOnlineDetail;
-	
-	private ControllerMusicOnline mControllerMusicOnline;
+	private DelegateMusicOnlineDetail mDelegateOnlineDetail;
+	private DelegateMusicOnline mDelegateOnline;
+//	private ControllerMusicOnline mControllerMusicOnline;
 
 	public static BaseManager getIntance() {
 		if (null == instance) {
@@ -52,19 +55,18 @@ public class BaseManager {
 		}
 		return instance;
 	}
-	public void setControllerMusicOnline(
-			ControllerMusicOnline mControllerMusicOnline) {
-		this.mControllerMusicOnline = mControllerMusicOnline;
-	}
 	
-	public void setControllerMusicOnlineDetail(
-			ControllerMusicOnlineDetail mControllerMusicOnlineDetail) {
-		this.mControllerMusicOnlineDetail = mControllerMusicOnlineDetail;
+	public void setDelegateOnline(DelegateMusicOnline mDelegateOnline) {
+		this.mDelegateOnline = mDelegateOnline;
+	}
+	public void setDelegateOnlineDetail(
+			DelegateMusicOnlineDetail mDelegateOnlineDetail) {
+		this.mDelegateOnlineDetail = mDelegateOnlineDetail;
 	}
 
 	public void setCurrentOnline(EntityZingMp3 mCurrentOnline) {
 		this.mCurrentOnline = mCurrentOnline;
-		mControllerMusicOnline.updateMusicOnline(mCurrentOnline);
+		mDelegateOnline.updateMusicOnline(mCurrentOnline);
 		
 	}
 
@@ -171,9 +173,10 @@ public class BaseManager {
 				mPlayerOnline.setDataSource(mCurrentOnline.getzUrlDownload());
 				mPlayerOnline.prepare();
 				mPlayerOnline.start();
-				mControllerMusicOnlineDetail.updateView(true, mCurrentOnline);
+				mDelegateOnlineDetail.updateView(mCurrentOnline,true);
 				Config.getInstance().setPlayOnline(true);
-				mControllerMusicOnlineDetail.updateTime();
+				mDelegateOnlineDetail.updateTime();
+				mDelegateOnline.updateMusicOnline(mCurrentOnline);
 				pauseMusic();
 			} catch (Exception e) {
 				Log.e("Exception Play Music:", e.getMessage());
@@ -184,7 +187,8 @@ public class BaseManager {
 	public void continueMusicOnline() {
 		if (mPlayerOnline != null && !mPlayerOnline.isPlaying()) {
 			mPlayerOnline.start();
-			mControllerMusicOnlineDetail.updateView(true, mCurrentOnline);
+			mDelegateOnlineDetail.updateView(mCurrentOnline, true);
+			mDelegateOnline.updateMusicOnline(mCurrentOnline);
 			Config.getInstance().setPlayOnline(true);
 			pauseMusic();
 		}
@@ -193,7 +197,8 @@ public class BaseManager {
 	public void pauseMusicOnline() {
 		if (mPlayerOnline != null && mPlayerOnline.isPlaying()) {
 			mPlayerOnline.pause();
-			mControllerMusicOnlineDetail.updateView(false, mCurrentOnline);
+			mDelegateOnlineDetail.updateView(mCurrentOnline, false);
+			mDelegateOnline.updateMusicOnline(mCurrentOnline);
 			Config.getInstance().setPlayOnline(false);
 		}
 	}

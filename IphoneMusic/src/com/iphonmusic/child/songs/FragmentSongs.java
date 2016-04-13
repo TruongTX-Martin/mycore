@@ -61,17 +61,17 @@ public class FragmentSongs extends BaseFragment {
 		layout_shuffle = (LinearLayout) rootView.findViewById(Rconfig
 				.getInstance().id("ll_shuffle"));
 		refesh();
-		// if (Instance.LISTSONG.size() == 0) {
-		// getListSongs(new File(MEDIA_PATH));
-		// } else {
 		if (mAdapter == null) {
 			mAdapter = new AdapterSongs(mContext, Instance.LISTSONG);
 			mListView.setAdapter(mAdapter);
 		} else {
 			mListView.setAdapter(mAdapter);
 		}
-		// }
 		handleEvent();
+		if(Instance.LISTSONG.size() > 0){
+			BaseManager.getIntance().playMusic();
+			BaseManager.getIntance().pauseMusic();
+		}
 		return rootView;
 	}
 
@@ -130,47 +130,6 @@ public class FragmentSongs extends BaseFragment {
 
 			}
 		});
-	}
-
-	@SuppressLint("NewApi")
-	public void getListSongs(File dir) {
-		String Pattern = ".mp3";
-		File listFile[] = dir.listFiles();
-		if (listFile != null && listFile.length > 0) {
-			for (File file : listFile) {
-				if (file != null && !file.isHidden()) {
-					if (file.isDirectory()) {
-						getListSongs(file);
-					} else {
-						if (file.getName().endsWith(Pattern)) {
-							String fullName = file.getName().substring(0,
-									(file.getName().length() - 4));
-							if (!fullName.substring(0, 1).contains(".")) {
-								EntitySong song = new EntitySong();
-								song.setSong_name(Rconfig.getInstance()
-										.getSongName(fullName));
-								song.setSong_singer(Rconfig.getInstance()
-										.getSingerName(fullName));
-								song.setSong_url(file.getPath());
-								song.setSong_file(file);
-								Instance.LISTSONG.add(song);
-								if (Instance.LISTSONG.size() == 1) {
-									BaseManager.getIntance().setCurrentSong(
-											song);
-									BaseManager.getIntance().playMusic();
-									BaseManager.getIntance().pauseMusic();
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (mAdapter == null) {
-			mAdapter = new AdapterSongs(mContext, Instance.LISTSONG);
-			mListView.setAdapter(mAdapter);
-		}
-		Instance.LISTSONG_FOR_PLAY = Instance.LISTSONG;
 	}
 
 	@Override

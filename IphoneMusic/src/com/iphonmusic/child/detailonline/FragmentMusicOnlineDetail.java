@@ -23,12 +23,16 @@ public class FragmentMusicOnlineDetail extends BaseFragment {
 	protected FloatingActionButton more_share;
 	protected ArrayList<FloatingActionButton> mListButton;
 
-
+	private boolean isNewPlay;
+	public void setIsNewPlay(boolean input){
+		this.isNewPlay = input;
+	}
 	public static FragmentMusicOnlineDetail newInstance() {
 		FragmentMusicOnlineDetail fragmentDetailPlay = new FragmentMusicOnlineDetail();
 		return fragmentDetailPlay;
 	}
 
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,9 +44,10 @@ public class FragmentMusicOnlineDetail extends BaseFragment {
 		BlockMusicOnlineDetail blockDetailPlay = new BlockMusicOnlineDetail(
 				rootView);
 
+		BaseManager.getIntance().setDelegateOnlineDetail(blockDetailPlay);
 		ControllerMusicOnlineDetail controller = new ControllerMusicOnlineDetail();
-		BaseManager.getIntance().setControllerMusicOnlineDetail(controller);
-		controller.setDelegate(blockDetailPlay);
+		controller.setIsNewPlay(isNewPlay);
+		controller.setmDelegate(blockDetailPlay);
 		controller.initListener();
 		
 

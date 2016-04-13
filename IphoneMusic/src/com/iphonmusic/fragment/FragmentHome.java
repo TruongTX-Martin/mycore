@@ -56,5 +56,11 @@ public class FragmentHome extends BaseFragment {
 		title_tab.setAllCaps(false);
 		title_tab.setViewPager(mPager);
 	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		BaseManager.getIntance().getControllerBottom().visibleRootView(true);
+	}
+	
 
 }

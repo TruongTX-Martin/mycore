@@ -34,11 +34,12 @@ public class FragmentMusicOnline extends BaseFragment {
 		BlockMusicOnline block = new BlockMusicOnline(rootView,mContext);
 		block.setSiteName(mSiteName);
 		block.initView();
+		BaseManager.getIntance().setDelegateOnline(block);
 		ControllerMusicOnline mController = new ControllerMusicOnline();
 		mController.setDelegate(block);
 		mController.setSiteName(mSiteName);
 		mController.request(Instance.SEARCH);
-		BaseManager.getIntance().setControllerMusicOnline(mController);
+	
 		
 		block.setOnKeyEdittext(mController.getOnKeyListenerEditText());
 		

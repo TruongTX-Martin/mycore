@@ -27,7 +27,6 @@
             android:padding="4dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="Vi em doi gian"
             android:textColor="#000000"
             android:textSize="16dp" />
 
@@ -98,14 +97,21 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/img_view"
+    <RelativeLayout
+        android:id="@+id/layout_image"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/layout_bottom"
-        android:layout_margin="15dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_detail" />
+        android:layout_margin="15dp" >
+
+        <ImageView
+            android:id="@+id/img_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_detail" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/more_plugins"
