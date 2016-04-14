@@ -53,20 +53,25 @@ public class FragmentFeedBack extends BaseFragment {
 				if (edt_email.getText().toString().length() > 0
 						&& edt_email.getText().toString().matches(emailPattern)
 						&& edt_content.getText().toString().length() > 0) {
-					Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri
-							.fromParts("tranxuantruong1992@gmail.com",
-									edt_email.getText().toString(), edt_content
-											.getText().toString()));
-					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-					startActivity(Intent.createChooser(emailIntent,
-							"Send email..."));
-					edt_email.setText("");
-					edt_content.setText("");
+					sendEmail();
 				}
 			}
 		});
 	}
 
+	private void sendEmail(){
+		 Intent email = new Intent(Intent.ACTION_SEND);
+		  email.putExtra(Intent.EXTRA_EMAIL, new String[]{"truongbkit@gmail.com"});
+		  //email.putExtra(Intent.EXTRA_CC, new String[]{ to});
+		  //email.putExtra(Intent.EXTRA_BCC, new String[]{to});
+		  email.putExtra(Intent.EXTRA_SUBJECT, "Customer Feedback:");
+		  email.putExtra(Intent.EXTRA_TEXT, edt_content.getText().toString());
+
+		  //need this to prompts email client only
+		  email.setType("message/rfc822");
+		  
+		  startActivityForResult(Intent.createChooser(email, edt_email.getText().toString()), 111);
+	}
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub

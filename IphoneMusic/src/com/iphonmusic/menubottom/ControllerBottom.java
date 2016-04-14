@@ -1,14 +1,13 @@
 package com.iphonmusic.menubottom;
 
+import android.view.View;
+import android.view.View.OnClickListener;
+
 import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.child.detail.FragmentDetailPlay;
 import com.iphonmusic.config.Config;
-import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.entity.EntitySong;
-
-import android.view.View;
-import android.view.View.OnClickListener;
 
 public class ControllerBottom {
 
@@ -23,13 +22,14 @@ public class ControllerBottom {
 	public ControllerBottom() {
 	}
 
-	
 	public void setIsFirstPlay(boolean b) {
 		isFirstPlay = false;
 	}
+
 	public boolean getIsFirstPlay() {
 		return isFirstPlay;
 	}
+
 	public OnClickListener getOnPlayListener() {
 		return onPlayListener;
 	}
@@ -41,8 +41,6 @@ public class ControllerBottom {
 	public OnClickListener getOnLayoutListener() {
 		return onLayoutListener;
 	}
-	
-	
 
 	public void init() {
 		onPlayListener = new OnClickListener() {
@@ -83,17 +81,17 @@ public class ControllerBottom {
 				BaseManager.getIntance().replaceFragment(detailPlay);
 			}
 		};
-//		if (Instance.LISTSONG.size() > 0) {
-//			EntitySong entitySong = Instance.LISTSONG.get(0);
-//			updateView(entitySong);
-//		}
+		// if (Instance.LISTSONG.size() > 0) {
+		// EntitySong entitySong = Instance.LISTSONG.get(0);
+		// updateView(entitySong);
+		// }
 	}
-	
-	public void updateImagePlay(boolean status){
-		if(status){
+
+	public void updateImagePlay(boolean status) {
+		if (status) {
 			mDelegate.getImagePlay().setImageResource(
 					Rconfig.getInstance().drawable("ic_play"));
-		}else{
+		} else {
 			mDelegate.getImagePlay().setImageResource(
 					Rconfig.getInstance().drawable("ic_pause"));
 		}

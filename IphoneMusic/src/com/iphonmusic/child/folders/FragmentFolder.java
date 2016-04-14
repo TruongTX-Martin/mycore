@@ -6,13 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.iphonmusic.adapter.AdapterFolder;
 import com.iphonmusic.adapter.AdapterSongs;
 import com.iphonmusic.base.fragment.BaseFragment;
+import com.iphonmusic.base.manager.BaseManager;
 import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.entity.EntityFolder;
 
 public class FragmentFolder extends BaseFragment {
 
@@ -44,11 +48,15 @@ public class FragmentFolder extends BaseFragment {
 		return rootView;
 	}
 	private void handleEvent(){
-		mListView.setOnClickListener(new OnClickListener() {
-			
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
-			public void onClick(View v) {
-				
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				EntityFolder entityFolder = (EntityFolder) parent.getItemAtPosition(position);
+				FragmentFolderDetail detail = FragmentFolderDetail.newInstance();
+				detail.setEntityFolder(entityFolder);
+				BaseManager.getIntance().replaceFragment(detail);
 			}
 		});
 	}
