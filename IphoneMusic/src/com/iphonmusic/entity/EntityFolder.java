@@ -1,15 +1,34 @@
 package com.iphonmusic.entity;
 
+import java.io.File;
+
 public class EntityFolder {
 
 	private String folder_name;
 	private String folder_url;
-	
+	private File folder_file;
+
+	// /storage/emulated/0/DCIM/Tong hop
 
 	public EntityFolder() {
 	}
 
+	public void setFolder_file(File folder_file) {
+		this.folder_file = folder_file;
+	}
+
+	public File getFolder_file() {
+		return folder_file;
+	}
+
 	public String getFolder_name() {
+		if (folder_file != null) {
+			String name = folder_file.getPath();
+			if (name.contains("/")) {
+				String[] array = name.split("/");
+				folder_name = array[array.length - 1];
+			}
+		}
 		return folder_name;
 	}
 

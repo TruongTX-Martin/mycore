@@ -3,14 +3,6 @@ package com.iphonmusic;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.iphonmusic.adapter.AdapterSongs;
-import com.iphonmusic.base.manager.BaseManager;
-import com.iphonmusic.config.Instance;
-import com.iphonmusic.config.Rconfig;
-import com.iphonmusic.entity.EntitySong;
-
-import android.R.array;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,10 +10,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
+import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Instance;
+import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.entity.EntityFolder;
+import com.iphonmusic.entity.EntitySong;
+
 public class StartActivity extends Activity {
 
 	final String MEDIA_PATH = Environment.getExternalStorageDirectory()
 			.getPath() + "/";
+	ArrayList<File> arrayFolder = new ArrayList<File>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +38,37 @@ public class StartActivity extends Activity {
 		@Override
 		protected ArrayList<EntitySong> doInBackground(String... params) {
 			File dir = new File(MEDIA_PATH);
+			getListSongs(new File(MEDIA_PATH));
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<EntitySong> result) {
+			new getFolderAsynTask().execute("");
+		}
+
+	}
+
+	private class getFolderAsynTask extends
+			AsyncTask<String, Void, ArrayList<EntitySong>> {
+
+		@Override
+		protected ArrayList<EntitySong> doInBackground(String... params) {
+			File dir = new File(MEDIA_PATH);
 			getListFolder(new File(MEDIA_PATH));
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(ArrayList<EntitySong> result) {
+			if (arrayFolder.size() > 0) {
+				for (int i = 0; i < arrayFolder.size(); i++) {
+					File file = arrayFolder.get(i);
+					EntityFolder entityFolder = new EntityFolder();
+					entityFolder.setFolder_file(file.getParentFile());
+					Instance.LISTFOLDER.add(entityFolder);
+				}
+			}
 			toMainActivity();
 		}
 
@@ -54,9 +78,6 @@ public class StartActivity extends Activity {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 	}
-
-	int count = 0;
-	ArrayList<File> arrayList = new ArrayList<File>();
 
 	public void getListFolder(File dir) {
 		String Pattern = ".mp3";
@@ -69,16 +90,15 @@ public class StartActivity extends Activity {
 						}
 					} else {
 						if (file.getName().endsWith(Pattern)) {
-							count++;
-							arrayList.add(file);
+							arrayFolder.add(file);
 						}
 					}
 				}
 			}
 		}
-		for(int i=0; i< arrayList.size(); i++){
-			File file = arrayList.get(i);
-			Log.e("Folder===========>"+i+":", file.getAbsolutePath());
+		for (int i = 0; i < arrayFolder.size(); i++) {
+			File file = arrayFolder.get(i);
+			Log.e("Folder===========>" + i + ":", file.getAbsolutePath());
 		}
 	}
 
@@ -90,8 +110,7 @@ public class StartActivity extends Activity {
 					folderHasMp3(file);
 				} else {
 					if (file.getName().endsWith(".mp3")) {
-						count++;
-						arrayList.add(file);
+						arrayFolder.add(file);
 						return true;
 					}
 				}
