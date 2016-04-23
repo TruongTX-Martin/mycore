@@ -53,6 +53,7 @@ public class BlockBottom implements DelegateBottom {
 //		if (BaseManager.getIntance().getCurrentSong() != null) {
 //			updateView(BaseManager.getIntance().getCurrentSong());
 //		}
+		txt_name_song.setSelected(true);
 		if(Instance.LISTSONG.size() > 0){
 			updateView(Instance.LISTSONG.get(0));
 			BaseManager.getIntance().setCurrentSong(Instance.LISTSONG.get(0));

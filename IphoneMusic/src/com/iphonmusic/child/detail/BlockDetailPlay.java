@@ -3,16 +3,6 @@ package com.iphonmusic.child.detail;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.iphonmusic.base.manager.BaseManager;
-import com.iphonmusic.config.Config;
-import com.iphonmusic.config.Constant;
-import com.iphonmusic.config.Instance;
-import com.iphonmusic.config.Rconfig;
-import com.iphonmusic.config.Utilities;
-import com.iphonmusic.entity.EntitySong;
-import com.iphonmusic.style.floatingbutton.FloatingActionButton;
-import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -24,6 +14,15 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.iphonmusic.base.manager.BaseManager;
+import com.iphonmusic.config.Config;
+import com.iphonmusic.config.Instance;
+import com.iphonmusic.config.Rconfig;
+import com.iphonmusic.config.Utilities;
+import com.iphonmusic.entity.EntitySong;
+import com.iphonmusic.style.floatingbutton.FloatingActionButton;
+import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
 
 public class BlockDetailPlay implements DelegateDetailPlay,
 		OnSeekBarChangeListener, OnCompletionListener {
@@ -44,9 +43,7 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 	protected FloatingActionsMenu mMultipleActions;
 	private Context mContext;
 
-	protected FloatingActionButton btn_share;
 	protected FloatingActionButton btn_to_wishlist;
-	protected FloatingActionButton btn_to_playlist;
 	protected FloatingActionButton btn_repeat;
 	protected ArrayList<FloatingActionButton> mListButton;
 
@@ -100,23 +97,11 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 		mMultipleActions.createButton(mContext, Color.parseColor("#ffffff"),
 				Color.parseColor("#ffffff"), Color.parseColor("#000000"));
 		mListButton = new ArrayList<FloatingActionButton>();
-		// btn to playlist
-		btn_to_playlist = new FloatingActionButton(mContext);
-		btn_to_playlist.setColorNormal(Color.parseColor("#FFFFFF"));
-		btn_to_playlist.setColorPressed(Color.parseColor("#f4f4f4"));
-		btn_to_playlist.setIcon(Rconfig.getInstance().drawable("ic_add"));
-		mListButton.add(btn_to_playlist);
 		// btn to wishlist
 		btn_to_wishlist = new FloatingActionButton(mContext);
 		btn_to_wishlist.setColorNormal(Color.parseColor("#FFFFFF"));
 		btn_to_wishlist.setColorPressed(Color.parseColor("#f4f4f4"));
 		mListButton.add(btn_to_wishlist);
-		// btn share
-		btn_share = new FloatingActionButton(mContext);
-		btn_share.setColorNormal(Color.parseColor("#FFFFFF"));
-		btn_share.setColorPressed(Color.parseColor("#f4f4f4"));
-		btn_share.setIcon(Rconfig.getInstance().drawable("ic_share"));
-		mListButton.add(btn_share);
 		// btn repeat
 		btn_repeat = new FloatingActionButton(mContext);
 		btn_repeat.setColorNormal(Color.parseColor("#FFFFFF"));
@@ -132,13 +117,6 @@ public class BlockDetailPlay implements DelegateDetailPlay,
 			mMultipleActions.addButton(mListButton.get(i));
 		}
 
-		btn_share.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
 		btn_repeat.setOnClickListener(new OnClickListener() {
 
 			@Override

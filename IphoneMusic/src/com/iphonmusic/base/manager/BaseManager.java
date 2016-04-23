@@ -7,6 +7,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.provider.ContactsContract.DeletedContacts;
 import android.support.v4.app.Fragment;
@@ -14,8 +15,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.iphonmusic.base.fragment.BaseFragment;
+import com.iphonmusic.child.detail.DelegateDetailPlay;
 import com.iphonmusic.child.detailonline.ControllerMusicOnlineDetail;
 import com.iphonmusic.child.detailonline.DelegateMusicOnlineDetail;
 import com.iphonmusic.child.musiconline.ControllerMusicOnline;
@@ -28,6 +31,8 @@ import com.iphonmusic.entity.EntitySong;
 import com.iphonmusic.entity.EntityZingMp3;
 import com.iphonmusic.menubottom.ControllerBottom;
 import com.iphonmusic.menutop.controller.MenuTopController;
+import com.iphonmusic.service.ConstanceService;
+import com.iphonmusic.service.SongService;
 import com.iphonmusic.slidemenu.controller.PhoneSlideMenuController;
 
 public class BaseManager {
@@ -47,7 +52,9 @@ public class BaseManager {
 	private ArrayList<EntityZingMp3> mListEntityOnline;
 	private DelegateMusicOnlineDetail mDelegateOnlineDetail;
 	private DelegateMusicOnline mDelegateOnline;
-//	private ControllerMusicOnline mControllerMusicOnline;
+	private DelegateDetailPlay mDelegateDetail;
+
+	// private ControllerMusicOnline mControllerMusicOnline;
 
 	public static BaseManager getIntance() {
 		if (null == instance) {
@@ -55,10 +62,15 @@ public class BaseManager {
 		}
 		return instance;
 	}
-	
+
+	public void setDelegateDetail(DelegateDetailPlay mDelegateDetail) {
+		this.mDelegateDetail = mDelegateDetail;
+	}
+
 	public void setDelegateOnline(DelegateMusicOnline mDelegateOnline) {
 		this.mDelegateOnline = mDelegateOnline;
 	}
+
 	public void setDelegateOnlineDetail(
 			DelegateMusicOnlineDetail mDelegateOnlineDetail) {
 		this.mDelegateOnlineDetail = mDelegateOnlineDetail;
@@ -67,7 +79,7 @@ public class BaseManager {
 	public void setCurrentOnline(EntityZingMp3 mCurrentOnline) {
 		this.mCurrentOnline = mCurrentOnline;
 		mDelegateOnline.updateMusicOnline(mCurrentOnline);
-		
+
 	}
 
 	public EntityZingMp3 getCurrentOnline() {
@@ -100,8 +112,8 @@ public class BaseManager {
 
 	public void setCurrentSong(EntitySong mCurrentSong) {
 		this.mCurrentSong = mCurrentSong;
-		if(mControllerBottom != null){
-		mControllerBottom.updateView(mCurrentSong);
+		if (mControllerBottom != null) {
+			mControllerBottom.updateView(mCurrentSong);
 		}
 
 	}
@@ -173,7 +185,7 @@ public class BaseManager {
 				mPlayerOnline.setDataSource(mCurrentOnline.getzUrlDownload());
 				mPlayerOnline.prepare();
 				mPlayerOnline.start();
-				mDelegateOnlineDetail.updateView(mCurrentOnline,true);
+				mDelegateOnlineDetail.updateView(mCurrentOnline, true);
 				Config.getInstance().setPlayOnline(true);
 				mDelegateOnlineDetail.updateTime();
 				mDelegateOnline.updateMusicOnline(mCurrentOnline);
@@ -235,9 +247,13 @@ public class BaseManager {
 				mPlayer.prepare();
 				mPlayer.start();
 				mControllerBottom.updateImagePlay(true);
+				if (mDelegateDetail != null) {
+					mDelegateDetail.updateView();
+				}
 				Config.getInstance().setPlay(true);
 				mControllerBottom.setIsFirstPlay(false);
 				pauseMusicOnline();
+				showNotificationMusic();
 			} catch (Exception e) {
 				Log.e("Exception Play Music:", e.getMessage());
 			}
@@ -250,6 +266,7 @@ public class BaseManager {
 			mControllerBottom.updateImagePlay(true);
 			Config.getInstance().setPlay(true);
 			pauseMusicOnline();
+			showNotificationMusic();
 		}
 	}
 
@@ -258,7 +275,15 @@ public class BaseManager {
 			mPlayer.pause();
 			mControllerBottom.updateImagePlay(false);
 			Config.getInstance().setPlay(false);
+			showNotificationMusic();
 		}
+	}
+
+	private void showNotificationMusic() {
+		Intent serviceIntent = new Intent(mCurrentActivity, SongService.class);
+		serviceIntent.setAction(ConstanceService.START_ACTION_FOREGROUND);
+		BaseManager.getIntance().getCurrentActivity()
+				.startService(serviceIntent);
 	}
 
 	public void nextSong() {
@@ -338,7 +363,7 @@ public class BaseManager {
 						.getId("out_to_left", "anim"), Rconfig.getInstance()
 						.getId("in_from_left", "anim"), Rconfig.getInstance()
 						.getId("out_to_right", "anim"));
-			}else{
+			} else {
 				mControllerBottom.visibleRootView(true);
 			}
 			fragmentTransaction.replace(Rconfig.getInstance().id("container"),

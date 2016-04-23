@@ -69,8 +69,7 @@ public class FragmentSongs extends BaseFragment {
 		}
 		handleEvent();
 		if(Instance.LISTSONG.size() > 0){
-			BaseManager.getIntance().playMusic();
-			BaseManager.getIntance().pauseMusic();
+			Instance.LISTSONG_FOR_PLAY = Instance.LISTSONG;
 		}
 		return rootView;
 	}

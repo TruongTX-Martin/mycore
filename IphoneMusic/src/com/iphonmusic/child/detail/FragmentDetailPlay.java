@@ -5,18 +5,12 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.iphonmusic.base.fragment.BaseFragment;
 import com.iphonmusic.base.manager.BaseManager;
-import com.iphonmusic.config.Config;
-import com.iphonmusic.config.Instance;
 import com.iphonmusic.config.Rconfig;
 import com.iphonmusic.style.floatingbutton.FloatingActionButton;
 import com.iphonmusic.style.floatingbutton.FloatingActionsMenu;
@@ -45,6 +39,7 @@ public class FragmentDetailPlay extends BaseFragment {
 				Rconfig.getInstance().layout("layout_fragment_detailplay"),
 				container, false);
 		BlockDetailPlay blockDetailPlay = new BlockDetailPlay(rootView);
+		BaseManager.getIntance().setDelegateDetail(blockDetailPlay);
 		
 		ControllerDetailPlay controller = new ControllerDetailPlay();
 		controller.setDelegate(blockDetailPlay);
