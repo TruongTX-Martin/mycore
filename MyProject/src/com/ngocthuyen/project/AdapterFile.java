@@ -10,24 +10,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AdapterFolder extends BaseAdapter {
+public class AdapterFile extends BaseAdapter {
 
 	private Context mContext;
-	private ArrayList<EntityFolder> mFolders;
+	private ArrayList<EntityFile> mFile;
 
-	public AdapterFolder(Context context, ArrayList<EntityFolder> arrayList) {
+	public AdapterFile(Context context, ArrayList<EntityFile> arrayList) {
 		this.mContext = context;
-		this.mFolders = arrayList;
+		this.mFile = arrayList;
 	}
 
 	@Override
 	public int getCount() {
-		return mFolders.size();
+		return mFile.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mFolders.get(position);
+		return mFile.get(position);
 	}
 
 	@Override
@@ -40,15 +40,16 @@ public class AdapterFolder extends BaseAdapter {
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		ViewHolder holder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.layout_folder_entity, null);
+			holder = new ViewHolder();
+			convertView = inflater.inflate(R.layout.layout_file_entity, null);
 			holder.folderName = (TextView) convertView
 					.findViewById(R.id.txt_folerName);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		EntityFolder folder = (EntityFolder) getItem(position);
-		holder.folderName.setText(folder.getName());
+		EntityFile file = (EntityFile) getItem(position);
+		holder.folderName.setText(file.getName());
 		return convertView;
 	}
 
