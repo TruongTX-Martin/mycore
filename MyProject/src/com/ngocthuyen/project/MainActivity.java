@@ -1,8 +1,16 @@
 package com.ngocthuyen.project;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -10,8 +18,13 @@ import com.firebase.client.ValueEventListener;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Instrumentation.ActivityResult;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,11 +37,9 @@ public class MainActivity extends Activity {
 	private Button btn_add;
 	private ListView mListView;
 	private Context mContext;
-	private String mBaseUrl = "https://shining-inferno-1438.firebaseio.com/myproject";
-	private Firebase mFirebase;
-	private Firebase mFireBaseFolder;
 	private ArrayList<EntityFolder> mFolder;
 	private AdapterFolder mAdapter;
+	private String mBaseUrl = "http://192.168.1.151:3000";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,64 +48,7 @@ public class MainActivity extends Activity {
 		btn_add = (Button) findViewById(R.id.btn_add);
 		mListView = (ListView) findViewById(R.id.listview);
 		mContext = this;
-		Firebase.setAndroidContext(this);
-		mFirebase = new Firebase(mBaseUrl);
-		mFireBaseFolder = mFirebase.child("folder");
-
-		// try {
-		//
-		// Firebase folder = firebase.child("folder");
-		// EntityFolder entityFolder = new EntityFolder("1", "XXXX");
-		// // folder.setValue(entityFolder);
-		// folder.setValue(entityFolder, new Firebase.CompletionListener() {
-		//
-		// @Override
-		// public void onComplete(FirebaseError fireBaseError,
-		// Firebase fireBase) {
-		// showToast("Add Success");
-		// }
-		// });
-		// firebase.addValueEventListener(new ValueEventListener() {
-		//
-		// @Override
-		// public void onDataChange(DataSnapshot arg0) {
-		// showToast("Data Change");
-		// }
-		//
-		// @Override
-		// public void onCancelled(FirebaseError arg0) {
-		//
-		// }
-		// });
-		// } catch (Exception e) {
-		// System.err.println(e.getMessage());
-		// }
 		handleEvent();
-		mFirebase.addValueEventListener(new ValueEventListener() {
-
-			@Override
-			public void onDataChange(DataSnapshot snapshot) {
-				System.out.println("xxx");
-				String key = snapshot.getKey();
-				String value = snapshot.getValue().toString();
-				System.out.println(key);
-				System.out.println(value);
-				for (DataSnapshot chidle : snapshot.getChildren()) {
-					Map<String, Object> newPost = (Map<String, Object>) chidle.getValue();
-					if(newPost.size() > 0){
-					}
-				}
-			}
-
-			@Override
-			public void onCancelled(FirebaseError filebaseError) {
-				showToast("Some error occure while get data");
-			}
-		});
-	}
-
-	private void requestData() {
-
 	}
 
 	void handleEvent() {
@@ -102,47 +56,96 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				newFolder();
+				// Intent mediaIntent = new Intent(Intent.ACTION_GET_CONTENT);
+				// mediaIntent.setType("*/*"); // set mime type as per
+				// requirement
+				// startActivityForResult(mediaIntent, 100);
+				getAllData();
 			}
 		});
 	}
 
-	void newFolder() {
-		final Dialog dialog = new Dialog(mContext);
-		dialog.setContentView(R.layout.layout_new_folder);
-		dialog.setTitle("Input Name Folder:");
-		final EditText editText = (EditText) dialog
-				.findViewById(R.id.edt_folder);
-		Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
-		Button btnOk = (Button) dialog.findViewById(R.id.btn_ok);
-		btnCancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 100 && resultCode == RESULT_OK) {
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			Cursor cursor = getContentResolver().query(selectedImage,
+					filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String filePath = cursor.getString(columnIndex);
+			if (filePath != null && !filePath.equals("")) {
+				String name = getNameFileFromPath(filePath);
+				uploadFile(filePath, name);
 			}
-		});
-		btnOk.setOnClickListener(new OnClickListener() {
+		}
 
-			@Override
-			public void onClick(View v) {
-				String name = editText.getText().toString().trim();
-				if (name.length() > 0) {
-					EntityFolder folder = new EntityFolder(name);
-					mFireBaseFolder.push().setValue(folder,
-							new Firebase.CompletionListener() {
+	}
 
-								@Override
-								public void onComplete(FirebaseError arg0,
-										Firebase arg1) {
-									showToast("Add Success!");
-									dialog.dismiss();
-								}
-							});
-				}
+	private String getNameFileFromPath(String filePath) {
+		String name = "";
+		if (filePath.contains("/")) {
+			String[] array = filePath.split("/");
+			if (array.length > 0) {
+				name = array[array.length - 1];
 			}
-		});
-		dialog.show();
+		}
+		return name;
+	}
+	
+	private void uploadFile(String path) {
+		File file = new File(path);
+		try {
+		} catch (Exception e) {
+		}
+	}
+	
+	
+
+	private void getAllData() {
+		RequestQueue queue = Volley.newRequestQueue(this);
+		CustomRequest request = new CustomRequest(Method.GET, mBaseUrl,
+				new Response.Listener<String>() {
+
+					@Override
+					public void onResponse(String result) {
+						System.out.println(result);
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						System.out.println(error);
+					}
+				});
+		request.setRetryPolicy(new DefaultRetryPolicy(30000,
+				DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+				DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+		queue.add(request);
+	}
+
+	private void uploadFile(String filePath, String nameFile) {
+		RequestQueue queue = Volley.newRequestQueue(this);
+		String url = mBaseUrl + "/" + nameFile;
+		CustomRequest request = new CustomRequest(Method.POST, mBaseUrl,
+				new Response.Listener<String>() {
+
+					@Override
+					public void onResponse(String result) {
+						System.out.println(result);
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						System.out.println(error);
+					}
+				});
+		request.setParams("-f/files", "@" + filePath);
+		queue.add(request);
+
 	}
 
 	void showToast(String toast) {
